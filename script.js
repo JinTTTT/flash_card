@@ -1,7 +1,8 @@
 // 英语学习Flash Card应用
 class FlashCardApp {
     constructor() {
-        this.words = [];
+        this.words = [];                    // 单词数据（来自Excel）
+        this.progress = {};                 // 学习进度数据（JSON存储）
         this.currentReviewWords = [];
         this.currentReviewIndex = 0;
         this.reviewSession = {
@@ -9,6 +10,8 @@ class FlashCardApp {
             completed: 0,
             correct: 0
         };
+        this.excelFile = null;              // 当前Excel文件引用
+        this.lastExcelModified = null;      // Excel文件最后修改时间
         
         this.init();
     }
@@ -25,40 +28,115 @@ class FlashCardApp {
     // 数据存储和管理系统
     // ================================
     
-    // 加载数据
+    // 加载数据（分层存储）
     loadData() {
         try {
+            // 加载学习进度数据（JSON格式）
+            this.loadProgress();
+            
+            // 尝试加载之前的单词数据作为备用
+            this.loadLegacyData();
+        } catch (error) {
+            console.error('Error loading data:', error);
+            this.words = [];
+            this.progress = {};
+        }
+    }
+
+    // 加载学习进度
+    loadProgress() {
+        try {
+            const savedProgress = localStorage.getItem('flashcard-progress');
+            if (savedProgress) {
+                this.progress = JSON.parse(savedProgress);
+            } else {
+                this.progress = {
+                    wordProgress: {},
+                    statistics: {
+                        totalReviewed: 0,
+                        streakDays: 0,
+                        lastActivity: null
+                    },
+                    settings: {
+                        dailyTarget: 20,
+                        reviewReminder: true
+                    }
+                };
+            }
+        } catch (error) {
+            console.error('Error loading progress:', error);
+            this.progress = { wordProgress: {}, statistics: {}, settings: {} };
+        }
+    }
+
+    // 加载旧版本数据作为兼容
+    loadLegacyData() {
+        try {
             const saved = localStorage.getItem('flashcard-words');
-            if (saved) {
-                this.words = JSON.parse(saved);
-                // 确保每个单词都有必要的属性
-                this.words = this.words.map(word => ({
-                    id: word.id || Date.now() + Math.random(),
-                    word: word.word || '',
-                    definition: word.definition || '',
-                    examples: word.examples || '',
-                    createdAt: word.createdAt || new Date().toISOString(),
+            if (saved && this.words.length === 0) {
+                const legacyWords = JSON.parse(saved);
+                // 转换旧格式数据
+                this.convertLegacyData(legacyWords);
+            }
+        } catch (error) {
+            console.error('Error loading legacy data:', error);
+        }
+    }
+
+    // 转换旧格式数据
+    convertLegacyData(legacyWords) {
+        legacyWords.forEach(word => {
+            // 提取基础单词数据
+            const basicWord = {
+                id: word.id,
+                word: word.word,
+                definition: word.definition,
+                examples: word.examples,
+                category: word.category || '',
+                createdAt: word.createdAt
+            };
+            this.words.push(basicWord);
+
+            // 提取学习进度数据
+            if (word.reviewCount || word.lastReviewed) {
+                this.progress.wordProgress[word.id] = {
                     reviewCount: word.reviewCount || 0,
                     lastReviewed: word.lastReviewed || null,
                     nextReview: word.nextReview || new Date().toISOString(),
                     difficulty: word.difficulty || 0,
                     mastered: word.mastered || false
-                }));
+                };
             }
+        });
+        
+        // 保存转换后的数据
+        this.saveProgress();
+    }
+
+    // 保存学习进度
+    saveProgress() {
+        try {
+            localStorage.setItem('flashcard-progress', JSON.stringify(this.progress));
+            localStorage.setItem('flashcard-last-save', new Date().toISOString());
         } catch (error) {
-            console.error('Error loading data:', error);
-            this.words = [];
+            console.error('Error saving progress:', error);
+            this.showMessage('保存进度失败，请检查浏览器存储空间', 'error');
         }
     }
 
-    // 保存数据
-    saveData() {
+    // 保存单词数据到localStorage（备用）
+    saveWordsBackup() {
         try {
-            localStorage.setItem('flashcard-words', JSON.stringify(this.words));
-            localStorage.setItem('flashcard-last-save', new Date().toISOString());
+            const backup = this.words.map(word => {
+                const progress = this.progress.wordProgress[word.id] || {};
+                return {
+                    ...word,
+                    ...progress
+                };
+            });
+            localStorage.setItem('flashcard-words-backup', JSON.stringify(backup));
         } catch (error) {
-            console.error('Error saving data:', error);
-            this.showMessage('保存数据失败，请检查浏览器存储空间', 'error');
+            console.error('Error saving words backup:', error);
         }
     }
 
@@ -119,27 +197,44 @@ class FlashCardApp {
     getWordsForReview() {
         const now = new Date();
         return this.words.filter(word => {
-            const nextReview = new Date(word.nextReview);
-            return nextReview <= now && !word.mastered;
+            const progress = this.progress.wordProgress[word.id];
+            if (!progress) return true; // 新单词需要复习
+            
+            const nextReview = new Date(progress.nextReview);
+            return nextReview <= now && !progress.mastered;
         });
     }
 
     // 更新单词复习状态
     updateWordReview(wordId, difficulty) {
-        const word = this.words.find(w => w.id === wordId);
-        if (!word) return;
+        // 确保progress中存在该单词的记录
+        if (!this.progress.wordProgress[wordId]) {
+            this.progress.wordProgress[wordId] = {
+                reviewCount: 0,
+                lastReviewed: null,
+                nextReview: new Date().toISOString(),
+                difficulty: 0,
+                mastered: false
+            };
+        }
 
-        word.lastReviewed = new Date().toISOString();
-        word.reviewCount += 1;
-        word.difficulty = difficulty;
-        word.nextReview = this.calculateNextReview(word.reviewCount, difficulty);
+        const progress = this.progress.wordProgress[wordId];
+        progress.lastReviewed = new Date().toISOString();
+        progress.reviewCount += 1;
+        progress.difficulty = difficulty;
+        progress.nextReview = this.calculateNextReview(progress.reviewCount, difficulty);
         
         // 如果连续5次都是"记得清楚"，标记为已掌握
-        if (difficulty === 1 && word.reviewCount >= 5) {
-            word.mastered = true;
+        if (difficulty === 1 && progress.reviewCount >= 5) {
+            progress.mastered = true;
         }
         
-        this.saveData();
+        // 更新统计信息
+        this.progress.statistics.totalReviewed = (this.progress.statistics.totalReviewed || 0) + 1;
+        this.progress.statistics.lastActivity = new Date().toISOString();
+        
+        this.saveProgress();
+        this.saveWordsBackup();
     }
 
     // ================================
@@ -199,6 +294,23 @@ class FlashCardApp {
 
         document.getElementById('import-file').addEventListener('change', (e) => {
             this.importData(e.target.files[0]);
+        });
+
+        // Excel相关事件
+        document.getElementById('excel-import').addEventListener('change', (e) => {
+            this.importExcel(e.target.files[0]);
+        });
+
+        document.getElementById('download-template').addEventListener('click', () => {
+            this.downloadTemplate();
+        });
+
+        document.getElementById('export-excel').addEventListener('click', () => {
+            this.exportExcel();
+        });
+
+        document.getElementById('refresh-excel').addEventListener('click', () => {
+            this.refreshExcelData();
         });
     }
 
@@ -275,16 +387,23 @@ class FlashCardApp {
             word: word,
             definition: definition,
             examples: examples,
-            createdAt: new Date().toISOString(),
+            category: '',
+            createdAt: new Date().toISOString()
+        };
+        
+        this.words.push(newWord);
+        
+        // 为新单词创建学习进度记录
+        this.progress.wordProgress[newWord.id] = {
             reviewCount: 0,
             lastReviewed: null,
-            nextReview: new Date().toISOString(), // 立即可复习
+            nextReview: new Date().toISOString(),
             difficulty: 0,
             mastered: false
         };
         
-        this.words.push(newWord);
-        this.saveData();
+        this.saveProgress();
+        this.saveWordsBackup();
         
         // 更新统计
         const dailyAdded = parseInt(localStorage.getItem('flashcard-daily-added') || '0');
@@ -339,10 +458,16 @@ class FlashCardApp {
 
     createWordItem(word) {
         const createdDate = new Date(word.createdAt).toLocaleDateString('zh-CN');
-        const nextReviewDate = new Date(word.nextReview).toLocaleDateString('zh-CN');
-        const needsReview = new Date(word.nextReview) <= new Date();
-        const reviewStatus = word.mastered ? '已掌握' : (needsReview ? '需要复习' : `下次复习: ${nextReviewDate}`);
-        const reviewClass = word.mastered ? 'success' : (needsReview ? 'warning' : 'secondary');
+        const progress = this.progress.wordProgress[word.id] || {};
+        
+        const nextReview = progress.nextReview ? new Date(progress.nextReview) : new Date();
+        const nextReviewDate = nextReview.toLocaleDateString('zh-CN');
+        const needsReview = nextReview <= new Date();
+        const reviewCount = progress.reviewCount || 0;
+        const mastered = progress.mastered || false;
+        
+        const reviewStatus = mastered ? '已掌握' : (needsReview ? '需要复习' : `下次复习: ${nextReviewDate}`);
+        const reviewClass = mastered ? 'success' : (needsReview ? 'warning' : 'secondary');
         
         return `
             <div class="word-item" data-id="${word.id}">
@@ -352,7 +477,8 @@ class FlashCardApp {
                 <div class="meta">
                     <div class="word-info">
                         <span>添加时间: ${createdDate}</span>
-                        <span>复习次数: ${word.reviewCount}</span>
+                        <span>复习次数: ${reviewCount}</span>
+                        ${word.category ? `<span>分类: ${word.category}</span>` : ''}
                     </div>
                     <div class="word-status">
                         <span class="btn ${reviewClass}" style="font-size: 12px; padding: 4px 8px;">${reviewStatus}</span>
@@ -371,7 +497,14 @@ class FlashCardApp {
         if (!confirm('确定要删除这个单词吗？')) return;
         
         this.words = this.words.filter(word => word.id !== wordId);
-        this.saveData();
+        
+        // 同时删除学习进度
+        if (this.progress.wordProgress[wordId]) {
+            delete this.progress.wordProgress[wordId];
+        }
+        
+        this.saveProgress();
+        this.saveWordsBackup();
         this.renderWordList();
         this.updateUI();
     }
@@ -492,11 +625,11 @@ class FlashCardApp {
     
     updateStats() {
         const totalWords = this.words.length;
-        const masteredWords = this.words.filter(w => w.mastered).length;
+        const masteredWords = Object.values(this.progress.wordProgress).filter(p => p.mastered).length;
         const dailyReviewed = parseInt(localStorage.getItem('flashcard-daily-reviewed') || '0');
         
-        // 计算连续天数（简化实现）
-        const streakDays = this.calculateStreakDays();
+        // 计算连续天数
+        const streakDays = this.progress.statistics.streakDays || 0;
         
         document.getElementById('total-words').textContent = totalWords;
         document.getElementById('mastered-words').textContent = masteredWords;
@@ -591,6 +724,236 @@ class FlashCardApp {
                 this.showMessage('所有数据已清空', 'success');
             }
         }
+    }
+
+    // ================================
+    // Excel处理功能
+    // ================================
+    
+    // 导入Excel文件
+    async importExcel(file) {
+        if (!file) return;
+        
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            
+            // 解析Excel数据
+            const newWords = this.parseExcelData(jsonData);
+            
+            if (newWords.length > 0) {
+                // 合并新单词到现有数据中
+                this.mergeWords(newWords);
+                this.updateUI();
+                this.updateFileStatus(`已导入 ${newWords.length} 个单词`, 'connected');
+                this.showMessage(`成功导入 ${newWords.length} 个单词！`, 'success');
+                
+                // 保存Excel文件引用（如果浏览器支持）
+                if (window.FileSystemFileHandle && file.handle) {
+                    this.excelFile = file.handle;
+                    this.startExcelMonitoring();
+                }
+            } else {
+                this.showMessage('Excel文件中没有找到有效的单词数据', 'error');
+            }
+        } catch (error) {
+            console.error('Error importing Excel:', error);
+            this.showMessage('导入Excel文件失败：' + error.message, 'error');
+            this.updateFileStatus('导入失败', 'error');
+        }
+    }
+
+    // 解析Excel数据
+    parseExcelData(jsonData) {
+        const words = [];
+        
+        // 跳过表头，从第二行开始
+        for (let i = 1; i < jsonData.length; i++) {
+            const row = jsonData[i];
+            if (row.length >= 3 && row[1] && row[2]) { // 至少需要单词和解释
+                const word = {
+                    id: row[0] || `excel_${Date.now()}_${i}`, // ID或自动生成
+                    word: String(row[1]).trim(),
+                    definition: String(row[2]).trim(),
+                    examples: row[3] ? String(row[3]).trim() : '',
+                    category: row[4] ? String(row[4]).trim() : '',
+                    createdAt: row[5] ? new Date(row[5]).toISOString() : new Date().toISOString()
+                };
+                words.push(word);
+            }
+        }
+        
+        return words;
+    }
+
+    // 合并单词数据
+    mergeWords(newWords) {
+        let addedCount = 0;
+        let updatedCount = 0;
+        
+        newWords.forEach(newWord => {
+            const existingIndex = this.words.findIndex(w => w.id === newWord.id || w.word.toLowerCase() === newWord.word.toLowerCase());
+            
+            if (existingIndex >= 0) {
+                // 更新现有单词（保留学习进度）
+                this.words[existingIndex] = {
+                    ...this.words[existingIndex],
+                    ...newWord,
+                    id: this.words[existingIndex].id // 保持原ID
+                };
+                updatedCount++;
+            } else {
+                // 添加新单词
+                this.words.push(newWord);
+                addedCount++;
+                
+                // 为新单词创建初始学习记录
+                this.progress.wordProgress[newWord.id] = {
+                    reviewCount: 0,
+                    lastReviewed: null,
+                    nextReview: new Date().toISOString(),
+                    difficulty: 0,
+                    mastered: false
+                };
+            }
+        });
+        
+        this.saveProgress();
+        this.saveWordsBackup();
+        
+        console.log(`合并完成：新增 ${addedCount} 个，更新 ${updatedCount} 个`);
+    }
+
+    // 导出到Excel
+    exportExcel() {
+        try {
+            // 准备导出数据
+            const exportData = [
+                ['ID', '单词/短语', '解释', '例句', '分类', '添加时间', '复习次数', '掌握状态'] // 表头
+            ];
+            
+            this.words.forEach(word => {
+                const progress = this.progress.wordProgress[word.id] || {};
+                exportData.push([
+                    word.id,
+                    word.word,
+                    word.definition,
+                    word.examples,
+                    word.category || '',
+                    new Date(word.createdAt).toLocaleDateString('zh-CN'),
+                    progress.reviewCount || 0,
+                    progress.mastered ? '已掌握' : '学习中'
+                ]);
+            });
+            
+            // 创建工作簿
+            const worksheet = XLSX.utils.aoa_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, '单词列表');
+            
+            // 下载文件
+            const fileName = `flashcard-words-${new Date().toISOString().slice(0, 10)}.xlsx`;
+            XLSX.writeFile(workbook, fileName);
+            
+            this.showMessage('Excel文件导出成功！', 'success');
+        } catch (error) {
+            console.error('Error exporting Excel:', error);
+            this.showMessage('导出Excel失败：' + error.message, 'error');
+        }
+    }
+
+    // 下载Excel模板
+    downloadTemplate() {
+        try {
+            const templateData = [
+                ['ID', '单词/短语', '解释', '例句', '分类', '添加时间'], // 表头
+                ['1', 'nail down', 'successfully complete/clarify/figure out', 'We need to nail down the details of this project', '动词短语', '2024/8/8'],
+                ['2', 'meticulous', 'showing great attention to detail; very careful', 'She is meticulous about her work', '形容词', '2024/8/8'],
+                ['3', 'procrastinate', 'delay or postpone action', 'Stop procrastinating and start studying', '动词', '2024/8/8']
+            ];
+            
+            const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, '单词模板');
+            
+            // 添加说明工作表
+            const instructionData = [
+                ['Excel模板使用说明'],
+                [''],
+                ['列说明：'],
+                ['A列：ID - 可留空，系统会自动生成'],
+                ['B列：单词/短语 - 必填，要学习的英文单词或短语'],
+                ['C列：解释 - 必填，中文或英文解释'],
+                ['D列：例句 - 可选，但建议填写，帮助理解和记忆'],
+                ['E列：分类 - 可选，如"动词"、"名词"、"短语"等'],
+                ['F列：添加时间 - 可留空，系统会自动设置为当前时间'],
+                [''],
+                ['使用步骤：'],
+                ['1. 在模板中添加您要学习的单词'],
+                ['2. 保存Excel文件'],
+                ['3. 在应用中点击"导入Excel文件"'],
+                ['4. 选择您保存的Excel文件'],
+                ['5. 开始学习！']
+            ];
+            
+            const instructionSheet = XLSX.utils.aoa_to_sheet(instructionData);
+            XLSX.utils.book_append_sheet(workbook, instructionSheet, '使用说明');
+            
+            XLSX.writeFile(workbook, 'flashcard-template.xlsx');
+            this.showMessage('Excel模板下载成功！', 'success');
+        } catch (error) {
+            console.error('Error downloading template:', error);
+            this.showMessage('下载模板失败：' + error.message, 'error');
+        }
+    }
+
+    // 更新文件状态显示
+    updateFileStatus(message, status = 'normal') {
+        const statusElement = document.getElementById('file-status-text');
+        const refreshButton = document.getElementById('refresh-excel');
+        const statusContainer = document.querySelector('.file-status');
+        
+        statusElement.textContent = message;
+        
+        // 移除之前的状态类
+        statusContainer.classList.remove('connected', 'error');
+        
+        if (status === 'connected') {
+            statusContainer.classList.add('connected');
+            refreshButton.style.display = 'inline-block';
+        } else if (status === 'error') {
+            statusContainer.classList.add('error');
+            refreshButton.style.display = 'none';
+        } else {
+            refreshButton.style.display = 'none';
+        }
+    }
+
+    // 刷新Excel数据
+    refreshExcelData() {
+        if (this.excelFile) {
+            // 如果有Excel文件引用，重新读取
+            this.readExcelFile();
+        } else {
+            this.showMessage('请先导入Excel文件', 'error');
+        }
+    }
+
+    // 开始Excel文件监听
+    startExcelMonitoring() {
+        // 注意：实际的文件监听需要特殊的API支持
+        // 这里实现一个简单的定时检查
+        if (this.excelMonitorInterval) {
+            clearInterval(this.excelMonitorInterval);
+        }
+        
+        this.excelMonitorInterval = setInterval(() => {
+            // 这里可以实现文件变化检测逻辑
+            // 由于浏览器限制，实际实现可能需要用户手动刷新
+        }, 5000);
     }
 
     // ================================

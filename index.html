@@ -6,6 +6,8 @@
     <title>英语学习Flash Card</title>
     <link rel="stylesheet" href="style.css">
     <meta name="theme-color" content="#4CAF50">
+    <!-- SheetJS库用于处理Excel文件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <header>
@@ -41,6 +43,20 @@
                     
                     <button type="submit" class="btn primary">保存单词</button>
                 </form>
+                
+                <div class="excel-operations">
+                    <h3>Excel批量管理</h3>
+                    <div class="excel-controls">
+                        <input type="file" id="excel-import" accept=".xlsx,.xls" style="display: none;">
+                        <button class="btn secondary" onclick="document.getElementById('excel-import').click()">导入Excel文件</button>
+                        <button class="btn secondary" id="download-template">下载Excel模板</button>
+                        <button class="btn secondary" id="export-excel">导出到Excel</button>
+                    </div>
+                    <div class="file-status">
+                        <span id="file-status-text">未连接Excel文件</span>
+                        <button id="refresh-excel" class="btn secondary" style="display: none;">刷新Excel数据</button>
+                    </div>
+                </div>
                 
                 <div id="add-message" class="message"></div>
             </div>
