@@ -77,9 +77,21 @@ class FlashCardApp {
     }
 
     initReview() {
+        console.log('initReview - words count:', this.storage.words.length);
+        console.log('initReview - words:', this.storage.words);
+        
         const session = this.review.startReview();
+        console.log('initReview - session:', session);
+        
         this.ui.updateReviewUI(session);
-        this.showCurrentCard();
+        
+        // 如果有单词需要复习，显示Flash Card
+        if (session.total > 0) {
+            this.showCurrentCard();
+        } else {
+            // 没有单词时显示空状态
+            this.ui.showFlashCard(null);
+        }
     }
 
     showCurrentCard() {

@@ -2,6 +2,7 @@ class Storage {
     constructor() {
         this.words = [];
         this.progress = this.loadProgress();
+        this.loadLegacyData(); // 加载旧数据作为兼容
     }
 
     loadProgress() {
@@ -142,6 +143,44 @@ class Storage {
         
         this.saveProgress();
         return newWord;
+    }
+
+    loadLegacyData() {
+        try {
+            const saved = localStorage.getItem('flashcard-words');
+            if (saved && this.words.length === 0) {
+                const legacyWords = JSON.parse(saved);
+                this.convertLegacyData(legacyWords);
+            }
+        } catch (error) {
+            console.error('Error loading legacy data:', error);
+        }
+    }
+
+    convertLegacyData(legacyWords) {
+        legacyWords.forEach(word => {
+            const basicWord = {
+                id: word.id,
+                word: word.word,
+                definition: word.definition,
+                examples: word.examples,
+                category: word.category || '',
+                createdAt: word.createdAt
+            };
+            this.words.push(basicWord);
+
+            if (word.reviewCount || word.lastReviewed) {
+                this.progress.wordProgress[word.id] = {
+                    reviewCount: word.reviewCount || 0,
+                    lastReviewed: word.lastReviewed || null,
+                    nextReview: word.nextReview || new Date().toISOString(),
+                    difficulty: word.difficulty || 0,
+                    mastered: word.mastered || false
+                };
+            }
+        });
+        
+        this.saveProgress();
     }
 
     deleteWord(wordId) {
