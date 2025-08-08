@@ -1,6 +1,6 @@
 class EbbinghausAlgorithm {
     constructor() {
-        this.intervals = [1, 2, 4, 7, 15, 30, 60, 120];
+        this.intervals = [0, 1, 2, 4, 7, 15, 30, 60, 120]; // 第一次复习改为当天
     }
 
     calculateNextReview(reviewCount, difficulty) {
@@ -26,8 +26,10 @@ class EbbinghausAlgorithm {
 
     getWordsForReview(words, progressData) {
         const now = new Date();
+        
         return words.filter(word => {
             const progress = progressData[word.id];
+            
             if (!progress) return true;
             
             const nextReview = new Date(progress.nextReview);

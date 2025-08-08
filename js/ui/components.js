@@ -28,8 +28,8 @@ class UI {
         if (words.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <p>还没有添加任何单词</p>
-                    <button class="btn primary" onclick="app.showSection('add')">添加第一个单词</button>
+                    <p>No words added yet</p>
+                    <button class="btn primary" onclick="app.showSection('add')">Add First Word</button>
                 </div>
             `;
             return;
@@ -65,9 +65,9 @@ class UI {
         const nextReview = progress.nextReview ? new Date(progress.nextReview) : new Date();
         const needsReview = nextReview <= new Date();
         
-        const reviewStatus = progress.mastered ? '已掌握' : 
-                           needsReview ? '需要复习' : 
-                           `下次复习: ${nextReview.toLocaleDateString('zh-CN')}`;
+        const reviewStatus = progress.mastered ? 'Mastered' : 
+                           needsReview ? 'Need Review' : 
+                           `Next Review: ${nextReview.toLocaleDateString('en-US')}`;
         const reviewClass = progress.mastered ? 'success' : needsReview ? 'warning' : 'secondary';
         
         return `
@@ -77,9 +77,9 @@ class UI {
                 <div class="examples">${word.examples}</div>
                 <div class="meta">
                     <div class="word-info">
-                        <span>添加: ${createdDate}</span>
-                        <span>复习: ${progress.reviewCount || 0}次</span>
-                        ${word.category ? `<span>分类: ${word.category}</span>` : ''}
+                        <span>Added: ${createdDate}</span>
+                        <span>Reviews: ${progress.reviewCount || 0}</span>
+                        ${word.category ? `<span>Category: ${word.category}</span>` : ''}
                     </div>
                     <div class="word-status">
                         <span class="btn ${reviewClass}" style="font-size: 12px; padding: 4px 8px;">
@@ -88,7 +88,7 @@ class UI {
                     </div>
                 </div>
                 <div class="actions">
-                    <button class="btn danger" onclick="app.deleteWord('${word.id}')">删除</button>
+                    <button class="btn danger" onclick="app.deleteWord('${word.id}')">Delete</button>
                 </div>
             </div>
         `;
@@ -106,9 +106,9 @@ class UI {
     }
 
     updateReviewUI(session) {
-        document.getElementById('review-count').textContent = `今日需复习：${session.total}`;
+        document.getElementById('review-count').textContent = `Today's Review: ${session.total}`;
         document.getElementById('review-progress').textContent = 
-            `进度：${session.completed}/${session.total}`;
+            `Progress: ${session.completed}/${session.total}`;
     }
 
     showFlashCard(word) {
@@ -126,6 +126,14 @@ class UI {
         
         document.querySelector('.card-front').style.display = 'flex';
         document.querySelector('.card-back').style.display = 'none';
+
+        // 自动播放单词读音
+        if (window.app && window.app.pronunciation) {
+            // 稍微延迟播放，让UI先更新
+            setTimeout(() => {
+                window.app.pronunciation.speak(word.word);
+            }, 300);
+        }
     }
 
     showAnswer() {
@@ -139,11 +147,11 @@ class UI {
             
         document.getElementById('flashcard-container').innerHTML = `
             <div class="empty-state">
-                <h3>复习完成！</h3>
-                <p>今日复习了 ${session.total} 个单词</p>
-                <p>正确率：${accuracy}%</p>
-                <button class="btn primary" onclick="app.showSection('add')">添加更多单词</button>
-                <button class="btn secondary" onclick="app.initReview()">重新开始复习</button>
+                <h3>Review Complete!</h3>
+                <p>Reviewed ${session.total} words today</p>
+                <p>Accuracy: ${accuracy}%</p>
+                <button class="btn primary" onclick="app.showSection('add')">Add More Words</button>
+                <button class="btn secondary" onclick="app.initReview()">Start Review Again</button>
             </div>
         `;
     }

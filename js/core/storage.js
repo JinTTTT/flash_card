@@ -94,33 +94,6 @@ class Storage {
         return added;
     }
 
-    exportCSV() {
-        const headers = ['ID', '单词/短语', '解释', '例句', '分类', '添加时间'];
-        const rows = [headers];
-        
-        this.words.forEach(word => {
-            rows.push([
-                word.id,
-                word.word,
-                word.definition,
-                word.examples,
-                word.category || '',
-                new Date(word.createdAt).toLocaleDateString('zh-CN')
-            ]);
-        });
-        
-        return rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-    }
-
-    downloadCSV() {
-        const csvContent = this.exportCSV();
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `vocabulary-${new Date().toISOString().slice(0, 10)}.csv`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-    }
 
     addWord(word, definition, examples) {
         const newWord = {
@@ -169,15 +142,14 @@ class Storage {
             };
             this.words.push(basicWord);
 
-            if (word.reviewCount || word.lastReviewed) {
-                this.progress.wordProgress[word.id] = {
-                    reviewCount: word.reviewCount || 0,
-                    lastReviewed: word.lastReviewed || null,
-                    nextReview: word.nextReview || new Date().toISOString(),
-                    difficulty: word.difficulty || 0,
-                    mastered: word.mastered || false
-                };
-            }
+            // 为每个单词创建进度记录
+            this.progress.wordProgress[word.id] = {
+                reviewCount: word.reviewCount || 0,
+                lastReviewed: word.lastReviewed || null,
+                nextReview: word.nextReview || new Date().toISOString(),
+                difficulty: word.difficulty || 0,
+                mastered: word.mastered || false
+            };
         });
         
         this.saveProgress();

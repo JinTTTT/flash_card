@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "word": "nail down",
+    "definition": "successfully complete/clarify",
+    "examples": "We need to nail down the details of this project",
+    "category": "动词短语",
+    "createdAt": "2024-08-08T00:00:00.000Z"
+  },
+  {
+    "id": "2", 
+    "word": "meticulous",
+    "definition": "very careful and precise",
+    "examples": "She is meticulous about her work",
+    "category": "形容词",
+    "createdAt": "2024-08-08T00:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "word": "procrastinate", 
+    "definition": "delay or postpone action",
+    "examples": "Stop procrastinating and start studying",
+    "category": "动词",
+    "createdAt": "2024-08-08T00:00:00.000Z"
+  }
+]

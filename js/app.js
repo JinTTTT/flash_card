@@ -5,6 +5,7 @@ class FlashCardApp {
         this.review = new ReviewSession(this.storage, this.algorithm);
         this.ui = new UI();
         this.events = new EventHandler(this);
+        this.pronunciation = new PronunciationService();
         
         this.init();
     }
@@ -14,6 +15,7 @@ class FlashCardApp {
         this.updateUI();
         this.checkDailyReset();
     }
+
 
     checkDailyReset() {
         const lastReset = localStorage.getItem('flashcard-last-reset');
@@ -39,34 +41,36 @@ class FlashCardApp {
         const examples = document.getElementById('examples').value.trim();
         
         if (!word || !definition || !examples) {
-            this.ui.showMessage('请填写所有字段', 'error');
+            this.ui.showMessage('Please fill in all fields', 'error');
             return;
         }
         
         const exists = this.storage.words.find(w => w.word.toLowerCase() === word.toLowerCase());
         if (exists) {
-            this.ui.showMessage('该单词已存在', 'error');
+            this.ui.showMessage('This word already exists', 'error');
             return;
         }
         
         this.storage.addWord(word, definition, examples);
         document.getElementById('word-form').reset();
-        this.ui.showMessage('单词添加成功！');
+        this.ui.showMessage('Word added successfully!');
         this.updateUI();
     }
 
-    async importCSV(file) {
+    async importJSON(file) {
         try {
-            const count = await this.storage.importCSV(file);
-            this.ui.showMessage(`成功导入 ${count} 个单词！`);
+            const text = await file.text();
+            const importedWords = JSON.parse(text);
+            const count = this.storage.mergeWords(importedWords);
+            this.ui.showMessage(`Successfully imported ${count} words!`);
             this.updateUI();
         } catch (error) {
-            this.ui.showMessage('导入失败：' + error.message, 'error');
+            this.ui.showMessage('Import failed: ' + error.message, 'error');
         }
     }
 
     deleteWord(wordId) {
-        if (!confirm('确定要删除这个单词吗？')) return;
+        if (!confirm('Are you sure you want to delete this word?')) return;
         this.storage.deleteWord(wordId);
         this.renderWordList();
         this.updateStats();
@@ -77,19 +81,12 @@ class FlashCardApp {
     }
 
     initReview() {
-        console.log('initReview - words count:', this.storage.words.length);
-        console.log('initReview - words:', this.storage.words);
-        
         const session = this.review.startReview();
-        console.log('initReview - session:', session);
-        
         this.ui.updateReviewUI(session);
         
-        // 如果有单词需要复习，显示Flash Card
         if (session.total > 0) {
             this.showCurrentCard();
         } else {
-            // 没有单词时显示空状态
             this.ui.showFlashCard(null);
         }
     }
@@ -125,11 +122,29 @@ class FlashCardApp {
         if (this.ui.currentSection === 'review') this.ui.updateReviewUI(this.review.session);
     }
 
+    // Export all words to JSON file for backup
+    exportJSON() {
+        try {
+            const jsonData = JSON.stringify(this.storage.words, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `vocabulary-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            
+            this.ui.showMessage('Vocabulary exported successfully!', 'success');
+        } catch (error) {
+            console.error('Export JSON error:', error);
+            this.ui.showMessage('Export failed: ' + error.message, 'error');
+        }
+    }
+
     clearAllData() {
         this.storage.words = [];
         this.storage.progress = { wordProgress: {}, statistics: {}, settings: {} };
         localStorage.clear();
-        this.ui.showMessage('所有数据已清空');
+        this.ui.showMessage('All data has been cleared');
         this.updateUI();
     }
 }

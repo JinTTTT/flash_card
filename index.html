@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英语学习Flash Card</title>
+    <title>Flash Card - English Learning</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -11,12 +11,12 @@
 </head>
 <body>
     <header>
-        <h1>英语学习Flash Card</h1>
+        <h1>Flash Card Learning</h1>
         <nav>
-            <button class="nav-btn active" data-section="add">添加单词</button>
-            <button class="nav-btn" data-section="list">单词列表</button>
-            <button class="nav-btn" data-section="review">复习</button>
-            <button class="nav-btn" data-section="stats">统计</button>
+            <button class="nav-btn active" data-section="add">Add Word</button>
+            <button class="nav-btn" data-section="list">Word List</button>
+            <button class="nav-btn" data-section="review">Review</button>
+            <button class="nav-btn" data-section="stats">Statistics</button>
         </nav>
     </header>
 
@@ -24,33 +24,32 @@
         <!-- 添加单词区域 -->
         <section id="add" class="section active">
             <div class="container">
-                <h2>添加新单词</h2>
+                <h2>Add New Word</h2>
                 <form id="word-form">
                     <div class="form-group">
-                        <label for="word">单词/短语：</label>
-                        <input type="text" id="word" required placeholder="例如：nail down">
+                        <label for="word">Word/Phrase:</label>
+                        <input type="text" id="word" required placeholder="e.g., nail down">
                     </div>
                     
                     <div class="form-group">
-                        <label for="definition">解释：</label>
-                        <input type="text" id="definition" required placeholder="例如：successfully complete/clarify/figure out">
+                        <label for="definition">Definition:</label>
+                        <input type="text" id="definition" required placeholder="e.g., successfully complete/clarify/figure out">
                     </div>
                     
                     <div class="form-group">
-                        <label for="examples">例句：</label>
-                        <textarea id="examples" required placeholder="例如：We need to nail down the details of this project"></textarea>
+                        <label for="examples">Example:</label>
+                        <textarea id="examples" required placeholder="e.g., We need to nail down the details of this project"></textarea>
                     </div>
                     
-                    <button type="submit" class="btn primary">保存单词</button>
+                    <button type="submit" class="btn primary">Save Word</button>
                 </form>
                 
-                <div class="csv-operations">
-                    <h3>CSV批量管理</h3>
-                    <div class="csv-controls">
-                        <input type="file" id="csv-import" accept=".csv" style="display: none;">
-                        <button class="btn secondary" onclick="document.getElementById('csv-import').click()">导入CSV文件</button>
-                        <button class="btn secondary" id="download-template">下载CSV模板</button>
-                        <button class="btn secondary" id="export-csv">导出CSV</button>
+                <div class="data-operations">
+                    <h3>Data Management</h3>
+                    <div class="data-controls">
+                        <input type="file" id="json-import" accept=".json" style="display: none;">
+                        <button class="btn secondary" onclick="document.getElementById('json-import').click()">Import JSON</button>
+                        <button class="btn primary" id="export-json">Export Backup</button>
                     </div>
                 </div>
                 
@@ -62,19 +61,19 @@
         <section id="list" class="section">
             <div class="container">
                 <div class="list-header">
-                    <h2>单词列表</h2>
+                    <h2>Word List</h2>
                     <div class="controls">
                         <select id="sort-select">
-                            <option value="recent">按时间排序</option>
-                            <option value="review">按复习优先级</option>
+                            <option value="recent">Sort by Time</option>
+                            <option value="review">Sort by Priority</option>
                         </select>
                     </div>
                 </div>
                 
                 <div id="word-list" class="word-list">
                     <div class="empty-state">
-                        <p>还没有添加任何单词</p>
-                        <button class="btn primary" onclick="showSection('add')">添加第一个单词</button>
+                        <p>No words added yet</p>
+                        <button class="btn primary" onclick="showSection('add')">Add First Word</button>
                     </div>
                 </div>
             </div>
@@ -84,36 +83,39 @@
         <section id="review" class="section">
             <div class="container">
                 <div class="review-header">
-                    <h2>Flash Card 复习</h2>
+                    <h2>Flash Card Review</h2>
                     <div class="review-info">
-                        <span id="review-count">今日需复习：0</span>
-                        <span id="review-progress">进度：0/0</span>
+                        <span id="review-count">Today's Review: 0</span>
+                        <span id="review-progress">Progress: 0/0</span>
                     </div>
                 </div>
 
                 <div id="flashcard-container">
                     <!-- 无复习内容状态 -->
                     <div id="no-review" class="empty-state">
-                        <p>今日没有需要复习的单词</p>
-                        <button class="btn primary" onclick="showSection('add')">添加新单词</button>
+                        <p>No words to review today</p>
+                        <button class="btn primary" onclick="showSection('add')">Add New Words</button>
                     </div>
 
                     <!-- Flash Card -->
-                    <div id="flashcard" class="flashcard hidden">
+                    <div id="flashcard" class="flashcard">
                         <div class="card">
                             <div class="card-front">
                                 <div class="word-display" id="current-word"></div>
-                                <button class="btn secondary" id="show-answer">显示答案</button>
+                                <div class="pronunciation-controls">
+                                    <button class="btn secondary" id="pronounce-btn" title="播放读音">🔊</button>
+                                    <button class="btn secondary" id="show-answer">Show Answer</button>
+                                </div>
                             </div>
                             
-                            <div class="card-back hidden">
+                            <div class="card-back">
                                 <div class="definition-display" id="current-definition"></div>
                                 <div class="examples-display" id="current-examples"></div>
                                 
                                 <div class="review-buttons">
-                                    <button class="btn danger" id="hard-btn">不记得</button>
-                                    <button class="btn warning" id="medium-btn">模糊</button>
-                                    <button class="btn success" id="easy-btn">记得清楚</button>
+                                    <button class="btn danger" id="hard-btn">Don't Remember</button>
+                                    <button class="btn warning" id="medium-btn">Vague</button>
+                                    <button class="btn success" id="easy-btn">Clear</button>
                                 </div>
                             </div>
                         </div>
@@ -125,43 +127,43 @@
         <!-- 统计区域 -->
         <section id="stats" class="section">
             <div class="container">
-                <h2>学习统计</h2>
+                <h2>Learning Statistics</h2>
                 
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="total-words">0</div>
-                        <div class="stat-label">总单词数</div>
+                        <div class="stat-label">Total Words</div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-number" id="mastered-words">0</div>
-                        <div class="stat-label">已掌握</div>
+                        <div class="stat-label">Mastered</div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-number" id="review-today">0</div>
-                        <div class="stat-label">今日复习</div>
+                        <div class="stat-label">Today's Review</div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-number" id="streak-days">0</div>
-                        <div class="stat-label">连续天数</div>
+                        <div class="stat-label">Streak Days</div>
                     </div>
                 </div>
 
                 <div class="recent-activity">
-                    <h3>最近活动</h3>
+                    <h3>Recent Activity</h3>
                     <div id="activity-list" class="activity-list">
                         <div class="empty-state">
-                            <p>暂无活动记录</p>
+                            <p>No activity records</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="data-management">
-                    <h3>数据管理</h3>
+                    <h3>Data Management</h3>
                     <div class="data-controls">
-                        <button class="btn danger" id="clear-data-btn">清空所有数据</button>
+                        <button class="btn danger" id="clear-data-btn">Clear All Data</button>
                     </div>
                 </div>
             </div>
@@ -169,12 +171,13 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 英语学习Flash Card - 基于艾宾浩斯遗忘曲线</p>
+        <p>&copy; 2024 Flash Card Learning - Based on Ebbinghaus Forgetting Curve</p>
     </footer>
 
     <script src="js/core/storage.js"></script>
     <script src="js/core/algorithm.js"></script>
     <script src="js/core/review.js"></script>
+    <script src="js/core/pronunciation.js"></script>
     <script src="js/ui/components.js"></script>
     <script src="js/ui/events.js"></script>
     <script src="js/app.js"></script>

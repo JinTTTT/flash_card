@@ -1,40 +1,148 @@
-# Flash Card 英语学习
+# Flash Card Learning
 
-基于艾宾浩斯遗忘曲线的英语单词学习应用
+A minimalist English vocabulary learning application based on the Ebbinghaus forgetting curve algorithm.
 
-## 功能
+## ✨ Features
 
-- **智能复习**：艾宾浩斯遗忘曲线算法，科学安排复习时间
-- **Flash Card**：卡片式学习，即时反馈
-- **CSV管理**：支持CSV文件批量导入导出
-- **学习统计**：进度跟踪和统计分析
+- **Smart Review**: Ebbinghaus forgetting curve algorithm for scientifically optimized review scheduling
+- **Flash Cards**: Card-based learning with instant feedback
+- **Auto Pronunciation**: Automatic word pronunciation using Web Speech API
+- **Progress Tracking**: Learning statistics and progress visualization
+- **Simple Data Management**: JSON import/export for backup
+- **Offline Ready**: Works completely offline, no server required
 
-## 使用
+## 🚀 Quick Start
 
-1. 打开 `index.html`
-2. 手动添加单词或导入CSV文件
-3. 开始Flash Card复习
+**Super Simple - No Installation Required!**
 
-## CSV格式
+1. **Download** or clone this repository
+2. **Double-click** `index.html` to open in your browser
+3. **Start learning** immediately!
 
-```csv
-ID,单词/短语,解释,例句,分类,添加时间
-1,nail down,successfully complete,We need to nail down the details,动词短语,2024/8/8
+```bash
+# Clone the repository
+git clone <repository-url>
+cd flash_card
+
+# Simply open the HTML file
+open index.html  # Mac
+# or double-click index.html in file explorer
 ```
 
-## 架构
+## 🎯 How to Use
 
+### Adding Words
+- Click **"Add Word"** tab
+- Fill in: Word/Phrase, Definition, Example
+- Click **"Save Word"**
+
+### Review Session
+- Click **"Review"** tab
+- Words appear as flash cards
+- **Auto pronunciation** plays when word is shown
+- Click 🔊 for manual pronunciation
+- Rate your memory: Don't Remember / Vague / Clear
+
+### Review Schedule
+The algorithm automatically schedules reviews based on your performance:
+- **Intervals**: 0 days → 1 day → 2 days → 4 days → 7 days → 15 days → 30 days → 60 days → 120 days
+- **Adaptive**: Difficult words appear more frequently
+- **Mastery**: Words marked as mastered after 5 consecutive correct answers
+
+### Data Management
+- **Import JSON**: Load vocabulary from backup file
+- **Export Backup**: Save all words to JSON file
+- **Local Storage**: All data saved in browser automatically
+
+## 🎨 Design Features
+
+- **Minimalist Theme**: Clean black and white design
+- **Responsive**: Works on desktop, tablet, and mobile
+- **Modern UI**: Card-based layout with smooth animations
+- **English Interface**: Complete English localization
+
+## 📊 Learning Statistics
+
+Track your progress with:
+- Total words added
+- Words mastered
+- Daily review count
+- Learning streak days
+
+## 💾 Data Storage
+
+- **Primary**: Browser localStorage (supports 15,000+ words)
+- **Backup**: JSON import/export functionality
+- **No Server Required**: Everything runs locally
+- **Cross-Platform**: Works on Windows, Mac, Linux
+
+## 🔧 Technical Details
+
+### Browser Compatibility
+- Chrome, Firefox, Safari, Edge (modern versions)
+- Requires Web Speech API support for pronunciation
+- localStorage support required
+
+### File Structure
 ```
-├── data/vocabulary.csv     # 词汇数据
-├── js/
-│   ├── core/              # 核心功能
-│   ├── ui/                # 界面组件
-│   └── app.js            # 主应用
-├── css/                   # 样式文件
-└── index.html            # 主页面
+├── index.html              # Main application
+├── css/                    # Stylesheets
+│   ├── base.css           # Base theme and typography
+│   ├── components.css     # UI components
+│   └── layout.css         # Layout and responsive design
+├── js/                     # JavaScript modules
+│   ├── core/              # Core functionality
+│   │   ├── storage.js     # Data storage management
+│   │   ├── algorithm.js   # Ebbinghaus algorithm
+│   │   ├── review.js      # Review session logic
+│   │   └── pronunciation.js # Speech synthesis
+│   ├── ui/                # User interface
+│   │   ├── components.js  # UI components
+│   │   └── events.js      # Event handlers
+│   └── app.js             # Main application class
 ```
 
-## 算法
+## 🚀 No Server Required
 
-艾宾浩斯复习间隔：1天→2天→4天→7天→15天→30天...
-根据掌握程度自动调整间隔，连续5次正确标记为已掌握。
+This application runs entirely in the browser:
+- ✅ **File uploads/downloads work**
+- ✅ **Browser cache utilized**
+- ✅ **Offline functionality**
+- ✅ **No installation needed**
+
+## 📱 Mobile Support
+
+Fully responsive design works on:
+- Desktop computers
+- Tablets
+- Mobile phones
+- Touch interfaces supported
+
+## 🔄 Algorithm Details
+
+**Ebbinghaus Forgetting Curve Implementation:**
+- Initial review: Same day
+- Subsequent reviews: 1, 2, 4, 7, 15, 30, 60, 120 days
+- Difficulty adjustment: 
+  - Hard: 30% of normal interval
+  - Medium: 70% of normal interval  
+  - Easy: 120% of normal interval
+
+## 🎯 Perfect For
+
+- English language learners
+- Vocabulary building
+- Test preparation (TOEFL, IELTS, GRE)
+- Academic study
+- Professional development
+
+## 🔐 Privacy
+
+- **100% Local**: All data stays on your device
+- **No Tracking**: No analytics or data collection
+- **No Internet Required**: Works completely offline
+- **Your Control**: Export/import your data anytime
+
+---
+
+**Ready to start learning? Just open `index.html` and begin!** 🚀

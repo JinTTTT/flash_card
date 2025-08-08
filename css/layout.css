@@ -1,130 +1,151 @@
+/* Minimalist Layout Styles */
 header {
-    background: white;
+    background: var(--surface-color);
     box-shadow: var(--shadow);
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
 }
 
 header h1 {
     text-align: center;
-    padding: 20px 0 10px;
-    font-size: 1.8em;
+    padding: 32px 0 16px;
+    font-size: 2rem;
     color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: -0.025em;
 }
 
 nav {
     display: flex;
     justify-content: center;
-    padding: 10px 0 20px;
-    gap: 10px;
+    padding: 16px 0 32px;
+    gap: 8px;
 }
 
 .nav-btn {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: 2px solid var(--border-color);
-    background: white;
+    background: var(--surface-color);
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-family: var(--font-family);
 }
 
 .nav-btn:hover {
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    background: var(--hover-color);
 }
 
 .nav-btn.active {
     background: var(--primary-color);
-    color: white;
+    color: var(--secondary-color);
     border-color: var(--primary-color);
 }
 
 main {
-    min-height: calc(100vh - 200px);
-    padding: 30px 0;
+    min-height: calc(100vh - 300px);
 }
 
 .list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 16px;
 }
 
 .controls {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
 }
 
 .review-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .review-info {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #666;
+    gap: 32px;
+    margin-top: 16px;
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
-.csv-operations {
-    background: #f8f9fa;
-    padding: 20px;
+.data-operations {
+    background: var(--surface-color);
+    padding: 24px;
     border-radius: var(--border-radius);
-    margin: 30px 0;
+    margin: 32px 0;
     border: 2px dashed var(--border-color);
 }
 
-.csv-operations h3 {
-    margin-bottom: 15px;
+.data-operations h3 {
+    margin-bottom: 16px;
     color: var(--text-color);
-    font-size: 1.1em;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
-.csv-controls {
+.data-controls {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
 footer {
     text-align: center;
-    padding: 20px;
-    color: #666;
+    padding: 32px 24px;
+    color: var(--text-secondary);
     font-size: 14px;
     border-top: 1px solid var(--border-color);
-    background: white;
+    background: var(--surface-color);
+    margin-top: 48px;
 }
 
+/* Recent Activity */
+.recent-activity {
+    margin-top: 48px;
+}
+
+.activity-list {
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .container {
-        padding: 0 15px;
-    }
-    
     header h1 {
-        font-size: 1.5em;
+        font-size: 1.75rem;
+        padding: 24px 0 12px;
     }
     
     nav {
         flex-wrap: wrap;
+        gap: 6px;
     }
     
     .nav-btn {
-        padding: 8px 16px;
-        font-size: 13px;
+        padding: 10px 18px;
+        font-size: 14px;
     }
     
     .list-header {
         flex-direction: column;
         align-items: stretch;
+        gap: 12px;
     }
     
     .controls {
@@ -133,53 +154,38 @@ footer {
     
     .review-info {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
     
-    .review-buttons {
+    .data-operations {
+        margin: 24px 0;
+        padding: 20px;
+    }
+    
+    .data-controls {
         flex-direction: column;
     }
     
-    .review-buttons button {
-        width: 100%;
-    }
-    
-    .word-display {
-        font-size: 1.6em;
-    }
-    
-    .definition-display {
-        font-size: 1.1em;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .stat-number {
-        font-size: 2em;
-    }
-    
-    .csv-controls {
-        flex-direction: column;
-    }
-    
-    .csv-controls button {
+    .data-controls button {
         width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
+    .container {
+        padding: 0 16px;
     }
     
-    .card-front,
-    .card-back {
-        padding: 20px 15px;
+    header h1 {
+        font-size: 1.5rem;
     }
     
-    .word-item {
-        padding: 15px;
+    .nav-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+    
+    footer {
+        padding: 24px 16px;
     }
 }
