@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语学习Flash Card</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#4CAF50">
+</head>
+<body>
+    <header>
+        <h1>英语学习Flash Card</h1>
+        <nav>
+            <button class="nav-btn active" data-section="add">添加单词</button>
+            <button class="nav-btn" data-section="list">单词列表</button>
+            <button class="nav-btn" data-section="review">复习</button>
+            <button class="nav-btn" data-section="stats">统计</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 添加单词区域 -->
+        <section id="add" class="section active">
+            <div class="container">
+                <h2>添加新单词</h2>
+                <form id="word-form">
+                    <div class="form-group">
+                        <label for="word">单词/短语：</label>
+                        <input type="text" id="word" required placeholder="例如：nail down">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="definition">解释：</label>
+                        <input type="text" id="definition" required placeholder="例如：successfully complete/clarify/figure out">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="examples">例句：</label>
+                        <textarea id="examples" required placeholder="例如：We need to nail down the details of this project"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn primary">保存单词</button>
+                </form>
+                
+                <div id="add-message" class="message"></div>
+            </div>
+        </section>
+
+        <!-- 单词列表区域 -->
+        <section id="list" class="section">
+            <div class="container">
+                <div class="list-header">
+                    <h2>单词列表</h2>
+                    <div class="controls">
+                        <select id="sort-select">
+                            <option value="recent">按时间排序</option>
+                            <option value="review">按复习优先级</option>
+                        </select>
+                        <button id="export-btn" class="btn secondary">导出数据</button>
+                    </div>
+                </div>
+                
+                <div id="word-list" class="word-list">
+                    <div class="empty-state">
+                        <p>还没有添加任何单词</p>
+                        <button class="btn primary" onclick="showSection('add')">添加第一个单词</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 复习/Flash Card区域 -->
+        <section id="review" class="section">
+            <div class="container">
+                <div class="review-header">
+                    <h2>Flash Card 复习</h2>
+                    <div class="review-info">
+                        <span id="review-count">今日需复习：0</span>
+                        <span id="review-progress">进度：0/0</span>
+                    </div>
+                </div>
+
+                <div id="flashcard-container">
+                    <!-- 无复习内容状态 -->
+                    <div id="no-review" class="empty-state">
+                        <p>今日没有需要复习的单词</p>
+                        <button class="btn primary" onclick="showSection('add')">添加新单词</button>
+                    </div>
+
+                    <!-- Flash Card -->
+                    <div id="flashcard" class="flashcard hidden">
+                        <div class="card">
+                            <div class="card-front">
+                                <div class="word-display" id="current-word"></div>
+                                <button class="btn secondary" id="show-answer">显示答案</button>
+                            </div>
+                            
+                            <div class="card-back hidden">
+                                <div class="definition-display" id="current-definition"></div>
+                                <div class="examples-display" id="current-examples"></div>
+                                
+                                <div class="review-buttons">
+                                    <button class="btn danger" id="hard-btn">不记得</button>
+                                    <button class="btn warning" id="medium-btn">模糊</button>
+                                    <button class="btn success" id="easy-btn">记得清楚</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 统计区域 -->
+        <section id="stats" class="section">
+            <div class="container">
+                <h2>学习统计</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-words">0</div>
+                        <div class="stat-label">总单词数</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="mastered-words">0</div>
+                        <div class="stat-label">已掌握</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="review-today">0</div>
+                        <div class="stat-label">今日复习</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number" id="streak-days">0</div>
+                        <div class="stat-label">连续天数</div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>最近活动</h3>
+                    <div id="activity-list" class="activity-list">
+                        <div class="empty-state">
+                            <p>暂无活动记录</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-management">
+                    <h3>数据管理</h3>
+                    <div class="data-controls">
+                        <input type="file" id="import-file" accept=".json" style="display: none;">
+                        <button class="btn secondary" onclick="document.getElementById('import-file').click()">导入数据</button>
+                        <button class="btn secondary" id="backup-btn">备份数据</button>
+                        <button class="btn danger" id="clear-data-btn">清空所有数据</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 英语学习Flash Card - 基于艾宾浩斯遗忘曲线</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
