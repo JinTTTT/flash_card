@@ -41,14 +41,14 @@ The application follows a layered architecture with clear separation of concerns
 - Marks words as mastered after 5 consecutive correct reviews
 
 **Data Flow**:
-1. Vocabulary loaded from `data/vocabulary.json` on startup
-2. New words added via UI are merged with existing data
+1. Vocabulary loaded from localStorage cache (with fallback to legacy sources)
+2. New words added via UI are immediately cached in localStorage
 3. Progress tracked in localStorage as separate entity
 4. Export functionality saves all current vocabulary to downloadable JSON
 
 ### File Structure Significance
 
-- `data/vocabulary.json`: Master vocabulary file (auto-loaded)
+- `data/vocabulary.json`: Optional vocabulary file (legacy support)
 - `js/core/`: Pure business logic, no UI dependencies
 - `js/ui/`: UI components with no direct storage access
 - CSS organized by concern: base styles, components, layout
@@ -57,9 +57,11 @@ The application follows a layered architecture with clear separation of concerns
 
 The application uses a manual data management workflow:
 1. Add words via web interface
-2. Export vocabulary using "保存到本地文件" button
-3. Replace `data/vocabulary.json` with downloaded file
-4. Refresh page to load updated vocabulary
+2. Export vocabulary using "Export Backup" button
+3. Words are automatically cached in localStorage for persistence
+4. For sharing/backup: save exported JSON file
+
+**Browser-based Storage**: The app primarily uses localStorage for persistence, with JSON import/export for backup/sharing. The `data/vocabulary.json` file is optional - the app works entirely with browser storage.
 
 ### Key Integration Points
 

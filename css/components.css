@@ -382,3 +382,134 @@
         gap: 8px;
     }
 }
+
+/* Word List Styles */
+.word-stats {
+    background: var(--surface-color);
+    padding: 16px 24px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 24px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.word-list-container {
+    margin-top: 24px;
+}
+
+.word-list-item {
+    background: var(--surface-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.word-list-item:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+}
+
+.word-list-item .word-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 16px;
+}
+
+.word-list-item .word-title {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.phase-badge {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.025em;
+}
+
+.phase-badge.phase-1 { background: #e74c3c; }
+.phase-badge.phase-2 { background: #e67e22; }
+.phase-badge.phase-3 { background: #f39c12; }
+.phase-badge.phase-4 { background: #f1c40f; }
+.phase-badge.phase-5 { background: #2ecc71; }
+.phase-badge.phase-6 { background: #3498db; }
+.phase-badge.phase-7 { background: #9b59b6; }
+
+.word-list-item .word-definition {
+    color: var(--text-color);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.word-list-item .word-examples {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.95em;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border-color);
+}
+
+.word-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.word-progress-info .progress-detail {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* Empty state for word list */
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-secondary);
+}
+
+.empty-state p {
+    font-size: 1.125rem;
+    margin-bottom: 24px;
+}
+
+/* Responsive adjustments for word list */
+@media (max-width: 768px) {
+    .word-list-item .word-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .word-progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .word-progress-info .progress-detail {
+        gap: 8px;
+    }
+}

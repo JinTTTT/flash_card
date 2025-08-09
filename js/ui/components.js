@@ -66,4 +66,76 @@ class UI {
             </div>
         `;
     }
+
+    // 显示单词列表
+    showWordList(words) {
+        const totalWords = document.getElementById('total-words');
+        const wordListContent = document.getElementById('word-list-content');
+        const emptyState = document.getElementById('empty-word-list');
+
+        totalWords.textContent = `Total words: ${words.length}`;
+
+        if (words.length === 0) {
+            wordListContent.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        wordListContent.style.display = 'block';
+        emptyState.style.display = 'none';
+
+        wordListContent.innerHTML = words.map(word => this.renderWordListItem(word)).join('');
+    }
+
+    // 渲染单个单词列表项
+    renderWordListItem(word) {
+        const lastReviewed = word.progress?.lastReviewed 
+            ? this.formatDate(new Date(word.progress.lastReviewed))
+            : 'Never';
+        
+        const nextReview = word.progress?.nextReview 
+            ? this.formatDate(new Date(word.progress.nextReview))
+            : 'Today';
+
+        const reviewCount = word.progress?.reviewCount || 0;
+
+        return `
+            <div class="word-list-item">
+                <div class="word-header">
+                    <h3 class="word-title">${word.word}</h3>
+                    <span class="phase-badge phase-${word.phase}">Phase ${word.phase}</span>
+                </div>
+                
+                <div class="word-definition">${word.definition}</div>
+                
+                ${word.examples ? `<div class="word-examples">${word.examples}</div>` : ''}
+                
+                <div class="word-progress-info">
+                    <div class="progress-detail">
+                        <span>Reviewed: ${reviewCount} times</span>
+                        <span>Last: ${lastReviewed}</span>
+                        <span>Next: ${nextReview}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // 格式化日期
+    formatDate(date) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+        
+        const diffTime = date - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Today';
+        if (diffDays === 1) return 'Tomorrow';
+        if (diffDays === -1) return 'Yesterday';
+        if (diffDays > 1) return `In ${diffDays} days`;
+        if (diffDays < -1) return `${Math.abs(diffDays)} days ago`;
+        
+        return date.toLocaleDateString();
+    }
 }

@@ -187,6 +187,11 @@ class Storage {
         this.saveProgress();
     }
 
+    // 删除单词的别名方法
+    removeWord(wordId) {
+        return this.deleteWord(wordId);
+    }
+
     updateWordProgress(wordId, reviewData) {
         if (!this.progress.wordProgress[wordId]) {
             this.progress.wordProgress[wordId] = {
@@ -198,6 +203,25 @@ class Storage {
         Object.assign(this.progress.wordProgress[wordId], reviewData);
         this.progress.statistics.totalReviewed = (this.progress.statistics.totalReviewed || 0) + 1;
         this.saveProgress();
+    }
+
+    // 获取所有单词及其阶段信息
+    getWordsWithPhases(algorithm) {
+        return this.words.map(word => {
+            const progress = this.progress.wordProgress[word.id];
+            const phase = algorithm.getWordPhase(progress);
+            return {
+                ...word,
+                phase: phase,
+                progress: progress
+            };
+        });
+    }
+
+    // 按阶段排序单词（阶段越靠前的放在前面）
+    getWordsSortedByPhase(algorithm) {
+        const wordsWithPhases = this.getWordsWithPhases(algorithm);
+        return wordsWithPhases.sort((a, b) => a.phase - b.phase);
     }
 
 }

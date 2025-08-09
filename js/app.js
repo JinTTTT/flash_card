@@ -41,6 +41,7 @@ class FlashCardApp {
         this.ui.showSection(section);
         
         if (section === 'review') this.initReview();
+        if (section === 'wordlist') this.initWordList();
     }
 
     addWord() {
@@ -74,9 +75,11 @@ class FlashCardApp {
             this.ui.showMessage(`Successfully imported ${count} words!`);
             this.updateUI();
             
-            // If we're on the review section, reinitialize the review session
+            // Refresh current section if needed
             if (this.ui.currentSection === 'review') {
                 this.initReview();
+            } else if (this.ui.currentSection === 'wordlist') {
+                this.initWordList();
             }
         } catch (error) {
             this.ui.showMessage('Import failed: ' + error.message, 'error');
@@ -93,6 +96,11 @@ class FlashCardApp {
         } else {
             this.ui.showFlashCard(null);
         }
+    }
+
+    initWordList() {
+        const sortedWords = this.storage.getWordsSortedByPhase(this.algorithm);
+        this.ui.showWordList(sortedWords);
     }
 
     showCurrentCard() {
@@ -124,6 +132,7 @@ class FlashCardApp {
 
     updateUI() {
         if (this.ui.currentSection === 'review') this.ui.updateReviewUI(this.review.session);
+        if (this.ui.currentSection === 'wordlist') this.initWordList();
     }
 
     // Export all words to JSON file for backup

@@ -15,6 +15,7 @@
         <nav>
             <button class="nav-btn active" data-section="add">Add Word</button>
             <button class="nav-btn" data-section="review">Review</button>
+            <button class="nav-btn" data-section="wordlist">Word List</button>
         </nav>
     </header>
 
@@ -96,6 +97,27 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 单词列表区域 -->
+        <section id="wordlist" class="section">
+            <div class="container">
+                <h2>Word List</h2>
+                <div class="word-stats">
+                    <span id="total-words">Total words: 0</span>
+                </div>
+                
+                <div class="word-list-container">
+                    <div id="word-list-content">
+                        <!-- 单词列表将在这里显示 -->
+                    </div>
+                    
+                    <div id="empty-word-list" class="empty-state" style="display: none;">
+                        <p>No words found</p>
+                        <button class="btn primary" onclick="showSection('add')">Add New Words</button>
                     </div>
                 </div>
             </div>
