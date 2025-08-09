@@ -67,16 +67,9 @@ main {
     align-items: center;
 }
 
-.review-header {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
 .review-info {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    margin-top: 16px;
+    text-align: center;
+    margin-bottom: 24px;
     font-size: 16px;
     color: var(--text-secondary);
     font-weight: 500;

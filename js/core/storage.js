@@ -2,6 +2,7 @@ class Storage {
     constructor() {
         this.words = [];
         this.progress = this.loadProgress();
+        this.loadCachedWords(); // 加载缓存的单词
         this.loadLegacyData(); // 加载旧数据作为兼容
     }
 
@@ -22,8 +23,33 @@ class Storage {
     saveProgress() {
         try {
             localStorage.setItem('flashcard-progress', JSON.stringify(this.progress));
+            // Also save words data to localStorage
+            localStorage.setItem('flashcard-words-cache', JSON.stringify(this.words));
         } catch (error) {
             console.error('Error saving progress:', error);
+        }
+    }
+
+    loadCachedWords() {
+        try {
+            const cached = localStorage.getItem('flashcard-words-cache');
+            if (cached) {
+                this.words = JSON.parse(cached);
+                console.log(`Loaded ${this.words.length} words from cache`);
+                // Hide import hint if we have cached words
+                setTimeout(() => {
+                    const hint = document.getElementById('import-hint');
+                    if (hint && this.words.length > 0) hint.style.display = 'none';
+                }, 100);
+            } else {
+                // Show import hint if no cached words found
+                setTimeout(() => {
+                    const hint = document.getElementById('import-hint');
+                    if (hint) hint.style.display = 'block';
+                }, 100);
+            }
+        } catch (error) {
+            console.error('Error loading cached words:', error);
         }
     }
 
@@ -173,4 +199,5 @@ class Storage {
         this.progress.statistics.totalReviewed = (this.progress.statistics.totalReviewed || 0) + 1;
         this.saveProgress();
     }
+
 }

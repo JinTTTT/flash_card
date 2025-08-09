@@ -10,10 +10,20 @@ class FlashCardApp {
         this.init();
     }
 
-    init() {
+    async init() {
         this.events.bindEvents();
+        await this.loadInitialData();
         this.updateUI();
         this.checkDailyReset();
+    }
+
+    async loadInitialData() {
+        // 显示加载结果
+        if (this.storage.words.length > 0) {
+            console.log(`Total words available: ${this.storage.words.length}`);
+        } else {
+            console.log('No words found. Please import a JSON file to get started.');
+        }
     }
 
 
@@ -30,9 +40,7 @@ class FlashCardApp {
     showSection(section) {
         this.ui.showSection(section);
         
-        if (section === 'list') this.renderWordList();
         if (section === 'review') this.initReview();
-        if (section === 'stats') this.updateStats();
     }
 
     addWord() {
@@ -51,8 +59,9 @@ class FlashCardApp {
             return;
         }
         
-        this.storage.addWord(word, definition, examples);
+        const newWord = this.storage.addWord(word, definition, examples);
         document.getElementById('word-form').reset();
+        
         this.ui.showMessage('Word added successfully!');
         this.updateUI();
     }
@@ -64,21 +73,16 @@ class FlashCardApp {
             const count = this.storage.mergeWords(importedWords);
             this.ui.showMessage(`Successfully imported ${count} words!`);
             this.updateUI();
+            
+            // If we're on the review section, reinitialize the review session
+            if (this.ui.currentSection === 'review') {
+                this.initReview();
+            }
         } catch (error) {
             this.ui.showMessage('Import failed: ' + error.message, 'error');
         }
     }
 
-    deleteWord(wordId) {
-        if (!confirm('Are you sure you want to delete this word?')) return;
-        this.storage.deleteWord(wordId);
-        this.renderWordList();
-        this.updateStats();
-    }
-
-    renderWordList(sortBy = 'recent') {
-        this.ui.renderWordList(this.storage.words, this.storage.progress.wordProgress, sortBy);
-    }
 
     initReview() {
         const session = this.review.startReview();
@@ -96,6 +100,13 @@ class FlashCardApp {
         this.ui.showFlashCard(word);
     }
 
+    showAnswerAndContinue(difficulty) {
+        // Show answer first for Don't Know and Vague
+        this.ui.showAnswer();
+        // Store the difficulty for later use
+        this.pendingDifficulty = difficulty;
+    }
+
     reviewAnswer(difficulty) {
         const isComplete = this.review.submitAnswer(difficulty);
         
@@ -109,16 +120,9 @@ class FlashCardApp {
             this.showCurrentCard();
         }
         
-        this.updateStats();
-    }
-
-    updateStats() {
-        this.ui.updateStats(this.storage.words, this.storage.progress.wordProgress);
     }
 
     updateUI() {
-        if (this.ui.currentSection === 'list') this.renderWordList();
-        if (this.ui.currentSection === 'stats') this.updateStats();
         if (this.ui.currentSection === 'review') this.ui.updateReviewUI(this.review.session);
     }
 
@@ -139,20 +143,12 @@ class FlashCardApp {
             this.ui.showMessage('Export failed: ' + error.message, 'error');
         }
     }
-
-    clearAllData() {
-        this.storage.words = [];
-        this.storage.progress = { wordProgress: {}, statistics: {}, settings: {} };
-        localStorage.clear();
-        this.ui.showMessage('All data has been cleared');
-        this.updateUI();
-    }
 }
 
 function showSection(section) {
     window.app.showSection(section);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     window.app = new FlashCardApp();
 });

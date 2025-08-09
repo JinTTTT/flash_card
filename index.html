@@ -14,9 +14,7 @@
         <h1>Flash Card Learning</h1>
         <nav>
             <button class="nav-btn active" data-section="add">Add Word</button>
-            <button class="nav-btn" data-section="list">Word List</button>
             <button class="nav-btn" data-section="review">Review</button>
-            <button class="nav-btn" data-section="stats">Statistics</button>
         </nav>
     </header>
 
@@ -51,43 +49,21 @@
                         <button class="btn secondary" onclick="document.getElementById('json-import').click()">Import JSON</button>
                         <button class="btn primary" id="export-json">Export Backup</button>
                     </div>
+                    <div class="import-hint" id="import-hint" style="display: none;">
+                        <p>💡 <strong>First time?</strong> Import the vocabulary.json file to get started with 14 example words, or manually add your own words above.</p>
+                    </div>
                 </div>
                 
                 <div id="add-message" class="message"></div>
             </div>
         </section>
 
-        <!-- 单词列表区域 -->
-        <section id="list" class="section">
-            <div class="container">
-                <div class="list-header">
-                    <h2>Word List</h2>
-                    <div class="controls">
-                        <select id="sort-select">
-                            <option value="recent">Sort by Time</option>
-                            <option value="review">Sort by Priority</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div id="word-list" class="word-list">
-                    <div class="empty-state">
-                        <p>No words added yet</p>
-                        <button class="btn primary" onclick="showSection('add')">Add First Word</button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- 复习/Flash Card区域 -->
         <section id="review" class="section">
             <div class="container">
-                <div class="review-header">
-                    <h2>Flash Card Review</h2>
-                    <div class="review-info">
-                        <span id="review-count">Today's Review: 0</span>
-                        <span id="review-progress">Progress: 0/0</span>
-                    </div>
+                <div class="review-info">
+                    <span id="review-progress">Progress: 0/0</span>
                 </div>
 
                 <div id="flashcard-container">
@@ -101,21 +77,22 @@
                     <div id="flashcard" class="flashcard">
                         <div class="card">
                             <div class="card-front">
-                                <div class="word-display" id="current-word"></div>
-                                <div class="pronunciation-controls">
-                                    <button class="btn secondary" id="pronounce-btn" title="播放读音">🔊</button>
-                                    <button class="btn secondary" id="show-answer">Show Answer</button>
+                                <div class="word-with-pronunciation">
+                                    <div class="word-display" id="current-word"></div>
+                                    <button class="btn secondary" id="pronounce-btn">🔊</button>
+                                </div>
+                                <div class="review-buttons">
+                                    <button class="btn danger" id="hard-btn">Don't Know</button>
+                                    <button class="btn warning" id="medium-btn">Vague</button>
+                                    <button class="btn success" id="easy-btn">Remember</button>
                                 </div>
                             </div>
                             
                             <div class="card-back">
                                 <div class="definition-display" id="current-definition"></div>
                                 <div class="examples-display" id="current-examples"></div>
-                                
-                                <div class="review-buttons">
-                                    <button class="btn danger" id="hard-btn">Don't Remember</button>
-                                    <button class="btn warning" id="medium-btn">Vague</button>
-                                    <button class="btn success" id="easy-btn">Clear</button>
+                                <div class="next-button-container">
+                                    <button class="btn primary" id="next-btn">Next</button>
                                 </div>
                             </div>
                         </div>
@@ -124,50 +101,6 @@
             </div>
         </section>
 
-        <!-- 统计区域 -->
-        <section id="stats" class="section">
-            <div class="container">
-                <h2>Learning Statistics</h2>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="total-words">0</div>
-                        <div class="stat-label">Total Words</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-number" id="mastered-words">0</div>
-                        <div class="stat-label">Mastered</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-number" id="review-today">0</div>
-                        <div class="stat-label">Today's Review</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-number" id="streak-days">0</div>
-                        <div class="stat-label">Streak Days</div>
-                    </div>
-                </div>
-
-                <div class="recent-activity">
-                    <h3>Recent Activity</h3>
-                    <div id="activity-list" class="activity-list">
-                        <div class="empty-state">
-                            <p>No activity records</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="data-management">
-                    <h3>Data Management</h3>
-                    <div class="data-controls">
-                        <button class="btn danger" id="clear-data-btn">Clear All Data</button>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer>

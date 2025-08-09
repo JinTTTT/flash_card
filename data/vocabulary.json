@@ -4,7 +4,7 @@
     "word": "nail down",
     "definition": "successfully complete/clarify",
     "examples": "We need to nail down the details of this project",
-    "category": "动词短语",
+    "category": "phrasal verb",
     "createdAt": "2024-08-08T00:00:00.000Z"
   },
   {
@@ -12,7 +12,7 @@
     "word": "meticulous",
     "definition": "very careful and precise",
     "examples": "She is meticulous about her work",
-    "category": "形容词",
+    "category": "adjective",
     "createdAt": "2024-08-08T00:00:00.000Z"
   },
   {
@@ -20,7 +20,95 @@
     "word": "procrastinate", 
     "definition": "delay or postpone action",
     "examples": "Stop procrastinating and start studying",
-    "category": "动词",
+    "category": "verb",
     "createdAt": "2024-08-08T00:00:00.000Z"
+  },
+  {
+    "id": "4",
+    "word": "burn out",
+    "definition": "become exhausted or lose motivation",
+    "examples": "Working 80 hours a week will make you burn out quickly",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "5",
+    "word": "give something a shot",
+    "definition": "try something; attempt to do something",
+    "examples": "I've never played tennis before, but I'll give it a shot",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "6",
+    "word": "hang on something",
+    "definition": "depend on something; wait for something",
+    "examples": "The success of this project hangs on getting approval",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "7",
+    "word": "bite off more than one can chew",
+    "definition": "take on more responsibility than one can handle",
+    "examples": "Taking five courses this semester was biting off more than I could chew",
+    "category": "idiom",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "8",
+    "word": "get the hang of something",
+    "definition": "learn how to do something; become skilled at something",
+    "examples": "It took me a while to get the hang of using this software",
+    "category": "idiom",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "9",
+    "word": "stumble across something",
+    "definition": "find or discover something by accident",
+    "examples": "I stumbled across this amazing restaurant while exploring the city",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "10",
+    "word": "look up something",
+    "definition": "search for information; find details about something",
+    "examples": "Let me look up the meaning of this word in the dictionary",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "11",
+    "word": "run out of something",
+    "definition": "use up all of something; have none left",
+    "examples": "We ran out of milk, so I need to go to the store",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "12",
+    "word": "hang over",
+    "definition": "remain as a threat or problem; linger unresolved",
+    "examples": "The deadline is hanging over me like a dark cloud",
+    "category": "phrasal verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "13",
+    "word": "brinkmanship",
+    "definition": "the practice of pushing dangerous situations to the limit",
+    "examples": "The negotiation involved political brinkmanship between the two countries",
+    "category": "noun",
+    "createdAt": "2024-08-09T00:00:00.000Z"
+  },
+  {
+    "id": "14",
+    "word": "offend",
+    "definition": "cause someone to feel upset or annoyed",
+    "examples": "I didn't mean to offend you with my comment",
+    "category": "verb",
+    "createdAt": "2024-08-09T00:00:00.000Z"
   }
 ]

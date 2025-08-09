@@ -16,24 +16,23 @@ class EventHandler {
             this.app.addWord();
         });
 
-        document.getElementById('sort-select').addEventListener('change', (e) => {
-            this.app.renderWordList(e.target.value);
-        });
 
-        document.getElementById('show-answer').addEventListener('click', () => {
-            this.app.ui.showAnswer();
-        });
-
+        // Front card buttons
         document.getElementById('hard-btn').addEventListener('click', () => {
-            this.app.reviewAnswer(-1);
+            this.app.showAnswerAndContinue(-1);
         });
 
         document.getElementById('medium-btn').addEventListener('click', () => {
-            this.app.reviewAnswer(0);
+            this.app.showAnswerAndContinue(0);
         });
 
         document.getElementById('easy-btn').addEventListener('click', () => {
-            this.app.reviewAnswer(1);
+            this.app.reviewAnswer(1); // Remember - jump to next word directly
+        });
+
+        // Next button (after viewing answer)
+        document.getElementById('next-btn').addEventListener('click', () => {
+            this.app.reviewAnswer(this.app.pendingDifficulty);
         });
 
         document.getElementById('pronounce-btn').addEventListener('click', () => {
@@ -46,13 +45,6 @@ class EventHandler {
         document.getElementById('json-import').addEventListener('change', (e) => {
             if (e.target.files[0]) {
                 this.app.importJSON(e.target.files[0]);
-            }
-        });
-
-
-        document.getElementById('clear-data-btn').addEventListener('click', () => {
-            if (confirm('Are you sure you want to clear all data? This action cannot be undone!')) {
-                this.app.clearAllData();
             }
         });
 
