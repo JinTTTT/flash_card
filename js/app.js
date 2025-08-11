@@ -89,7 +89,7 @@ class FlashCardApp {
 
     initReview() {
         const session = this.review.startReview();
-        this.ui.updateReviewUI(session);
+        this.updateReviewProgress();
         
         if (session.total > 0) {
             this.showCurrentCard();
@@ -101,6 +101,14 @@ class FlashCardApp {
     initWordList() {
         const sortedWords = this.storage.getWordsSortedByPhase(this.algorithm);
         this.ui.showWordList(sortedWords);
+    }
+
+    updateReviewProgress() {
+        const session = this.review.session;
+        const currentIndex = this.review.currentIndex;
+        const totalWords = this.review.currentWords.length;
+        
+        this.ui.updateReviewUI(session, currentIndex, totalWords);
     }
 
     showCurrentCard() {
@@ -124,21 +132,65 @@ class FlashCardApp {
         if (isComplete) {
             this.ui.showReviewComplete(this.review.session);
         } else {
-            this.ui.updateReviewUI(this.review.session);
+            this.updateReviewProgress();
             this.showCurrentCard();
         }
         
     }
 
     updateUI() {
-        if (this.ui.currentSection === 'review') this.ui.updateReviewUI(this.review.session);
+        if (this.ui.currentSection === 'review') this.updateReviewProgress();
         if (this.ui.currentSection === 'wordlist') this.initWordList();
     }
 
+    // 从单词列表中删除单词
+    deleteWordFromList(wordId) {
+        // 确认删除
+        const word = this.storage.words.find(w => w.id == wordId);
+        if (!word) return;
+        
+        const confirmDelete = confirm(`Are you sure you want to delete "${word.word}"?`);
+        if (!confirmDelete) return;
+        
+        // 执行删除
+        this.storage.deleteWord(wordId);
+        this.ui.showMessage(`Word "${word.word}" deleted successfully!`, 'success');
+        
+        // 刷新单词列表
+        this.initWordList();
+    }
+
     // Export all words to JSON file for backup
-    exportJSON() {
+    async exportJSON() {
         try {
             const jsonData = JSON.stringify(this.storage.words, null, 2);
+            
+            // 尝试使用File System Access API保存到data文件夹
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const fileHandle = await window.showSaveFilePicker({
+                        startIn: 'documents',
+                        suggestedName: `vocabulary-backup-${new Date().toISOString().slice(0, 10)}.json`,
+                        types: [{
+                            description: 'JSON files',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(jsonData);
+                    await writable.close();
+                    
+                    this.ui.showMessage('Vocabulary exported successfully!', 'success');
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.warn('File System Access API failed:', err);
+                    }
+                }
+            }
+            
+            // 降级到传统下载方式
             const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -146,10 +198,86 @@ class FlashCardApp {
             link.click();
             URL.revokeObjectURL(link.href);
             
-            this.ui.showMessage('Vocabulary exported successfully!', 'success');
+            this.ui.showMessage('Vocabulary exported successfully! Please save to your data folder manually.', 'success');
         } catch (error) {
             console.error('Export JSON error:', error);
             this.ui.showMessage('Export failed: ' + error.message, 'error');
+        }
+    }
+
+    // Export progress data to JSON file for backup
+    async exportProgress() {
+        try {
+            const progressData = {
+                progress: this.storage.progress,
+                exportedAt: new Date().toISOString(),
+                version: '2.0'
+            };
+            const jsonData = JSON.stringify(progressData, null, 2);
+            
+            // 尝试使用File System Access API保存到data文件夹
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const fileHandle = await window.showSaveFilePicker({
+                        startIn: 'documents',
+                        suggestedName: `progress-backup-${new Date().toISOString().slice(0, 10)}.json`,
+                        types: [{
+                            description: 'JSON files',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(jsonData);
+                    await writable.close();
+                    
+                    this.ui.showMessage('Progress exported successfully!', 'success');
+                    return;
+                } catch (err) {
+                    if (err.name !== 'AbortError') {
+                        console.warn('File System Access API failed:', err);
+                    }
+                }
+            }
+            
+            // 降级到传统下载方式
+            const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `progress-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            
+            this.ui.showMessage('Progress exported successfully! Please save to your data folder manually.', 'success');
+        } catch (error) {
+            console.error('Export progress error:', error);
+            this.ui.showMessage('Export progress failed: ' + error.message, 'error');
+        }
+    }
+
+    // Import progress data from JSON file
+    async importProgress(file) {
+        try {
+            const text = await file.text();
+            const importedData = JSON.parse(text);
+            
+            if (importedData.progress) {
+                this.storage.progress = importedData.progress;
+                this.storage.saveProgress();
+                this.ui.showMessage('Progress imported successfully!', 'success');
+                this.updateUI();
+                
+                // Refresh current section if needed
+                if (this.ui.currentSection === 'review') {
+                    this.initReview();
+                } else if (this.ui.currentSection === 'wordlist') {
+                    this.initWordList();
+                }
+            } else {
+                this.ui.showMessage('Invalid progress file format', 'error');
+            }
+        } catch (error) {
+            this.ui.showMessage('Import progress failed: ' + error.message, 'error');
         }
     }
 }

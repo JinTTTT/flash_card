@@ -4,11 +4,13 @@ A minimalist English vocabulary learning application based on the Ebbinghaus for
 
 ## ✨ Features
 
-- **Smart Review**: Ebbinghaus forgetting curve algorithm for scientifically optimized review scheduling
-- **Flash Cards**: Card-based learning with instant feedback
+- **Smart Review**: Ebbinghaus forgetting curve algorithm with 7-phase learning system
+- **Flash Cards**: Card-based learning with instant feedback and rainbow phase indicators
 - **Auto Pronunciation**: Automatic word pronunciation using Web Speech API
-- **Progress Tracking**: Learning statistics and progress visualization
-- **Simple Data Management**: JSON import/export for backup
+- **Progress Tracking**: Real-time progress display and phase visualization
+- **Intelligent Scheduling**: Don't Know words cycle back immediately, Vague words step back one phase
+- **Data Management**: JSON import/export for vocabulary and separate progress backup
+- **Word Management**: Easy word deletion from word list interface
 - **Offline Ready**: Works completely offline, no server required
 
 ## 🚀 Quick Start
@@ -38,20 +40,31 @@ open index.html  # Mac
 
 ### Review Session
 - Click **"Review"** tab
-- Words appear as flash cards
+- Words appear as flash cards with **colorful phase indicators**
 - **Auto pronunciation** plays when word is shown
 - Click 🔊 for manual pronunciation
-- Rate your memory: Don't Remember / Vague / Clear
+- Rate your memory:
+  - **Don't Know**: Word goes back to Phase 0, appears at end of current session
+  - **Vague**: Word drops back one phase (shorter interval)
+  - **Remember**: Word advances to next phase (longer interval)
 
-### Review Schedule
-The algorithm automatically schedules reviews based on your performance:
-- **Intervals**: 0 days → 1 day → 2 days → 4 days → 7 days → 15 days → 30 days → 60 days → 120 days
-- **Adaptive**: Difficult words appear more frequently
-- **Mastery**: Words marked as mastered after 5 consecutive correct answers
+### 7-Phase Learning System
+The algorithm uses a scientific 7-phase system with color-coded indicators:
+- **Phase 0** 🔴: 1 day (Red)
+- **Phase 1** 🟠: 3 days (Orange)
+- **Phase 2** 🟡: 7 days (Yellow)
+- **Phase 3** 🟢: 14 days (Green)
+- **Phase 4** 🔵: 30 days (Blue)
+- **Phase 5** 🟣: 60 days (Indigo)
+- **Phase 6** 🟣: 120 days (Purple)
+- **Mastery**: Words are removed after completing Phase 6
 
 ### Data Management
-- **Import JSON**: Load vocabulary from backup file
-- **Export Backup**: Save all words to JSON file
+- **Import Vocabulary**: Load vocabulary from JSON backup file
+- **Export Vocabulary**: Save all words to JSON file
+- **Import Progress**: Load learning progress from backup
+- **Export Progress**: Save learning progress and phases separately
+- **Word List Management**: Delete words directly from the word list
 - **Local Storage**: All data saved in browser automatically
 
 ## 🎨 Design Features
@@ -120,13 +133,13 @@ Fully responsive design works on:
 
 ## 🔄 Algorithm Details
 
-**Ebbinghaus Forgetting Curve Implementation:**
-- Initial review: Same day
-- Subsequent reviews: 1, 2, 4, 7, 15, 30, 60, 120 days
-- Difficulty adjustment: 
-  - Hard: 30% of normal interval
-  - Medium: 70% of normal interval  
-  - Easy: 120% of normal interval
+**Ebbinghaus Forgetting Curve Implementation v2.0:**
+- **7-Phase System**: 1 → 3 → 7 → 14 → 30 → 60 → 120 days
+- **Intelligent Feedback**:
+  - **Don't Know**: Reset to Phase 0, immediate re-queue in session
+  - **Vague**: Step back one phase (shorter interval)
+  - **Remember**: Advance to next phase (longer interval)
+- **Automatic Migration**: Legacy data automatically updated to new system
 
 ## 🎯 Perfect For
 

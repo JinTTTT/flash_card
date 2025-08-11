@@ -35,12 +35,6 @@ class EventHandler {
             this.app.reviewAnswer(this.app.pendingDifficulty);
         });
 
-        document.getElementById('pronounce-btn').addEventListener('click', () => {
-            const currentWord = document.getElementById('current-word').textContent;
-            if (currentWord && this.app.pronunciation) {
-                this.app.pronunciation.speak(currentWord);
-            }
-        });
 
         document.getElementById('json-import').addEventListener('change', (e) => {
             if (e.target.files[0]) {
@@ -50,6 +44,16 @@ class EventHandler {
 
         document.getElementById('export-json').addEventListener('click', () => {
             this.app.exportJSON();
+        });
+
+        document.getElementById('progress-import').addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                this.app.importProgress(e.target.files[0]);
+            }
+        });
+
+        document.getElementById('export-progress').addEventListener('click', () => {
+            this.app.exportProgress();
         });
     }
 

@@ -4,6 +4,7 @@ class Storage {
         this.progress = this.loadProgress();
         this.loadCachedWords(); // 加载缓存的单词
         this.loadLegacyData(); // 加载旧数据作为兼容
+        this.migrateToNewAlgorithm(); // 迁移到新算法逻辑
     }
 
     loadProgress() {
@@ -108,6 +109,7 @@ class Storage {
                 this.words.push(newWord);
                 this.progress.wordProgress[newWord.id] = {
                     reviewCount: 0,
+                    phase: 0,
                     lastReviewed: null,
                     nextReview: new Date().toISOString(),
                     difficulty: 0,
@@ -134,6 +136,7 @@ class Storage {
         this.words.push(newWord);
         this.progress.wordProgress[newWord.id] = {
             reviewCount: 0,
+            phase: 0,
             lastReviewed: null,
             nextReview: new Date().toISOString(),
             difficulty: 0,
@@ -171,6 +174,7 @@ class Storage {
             // 为每个单词创建进度记录
             this.progress.wordProgress[word.id] = {
                 reviewCount: word.reviewCount || 0,
+                phase: word.phase || 0,
                 lastReviewed: word.lastReviewed || null,
                 nextReview: word.nextReview || new Date().toISOString(),
                 difficulty: word.difficulty || 0,
@@ -195,7 +199,7 @@ class Storage {
     updateWordProgress(wordId, reviewData) {
         if (!this.progress.wordProgress[wordId]) {
             this.progress.wordProgress[wordId] = {
-                reviewCount: 0, lastReviewed: null, 
+                reviewCount: 0, phase: 0, lastReviewed: null, 
                 nextReview: new Date().toISOString(), difficulty: 0, mastered: false
             };
         }
@@ -222,6 +226,51 @@ class Storage {
     getWordsSortedByPhase(algorithm) {
         const wordsWithPhases = this.getWordsWithPhases(algorithm);
         return wordsWithPhases.sort((a, b) => a.phase - b.phase);
+    }
+
+    // 迁移到新算法逻辑
+    migrateToNewAlgorithm() {
+        // 检查是否已经迁移过
+        if (this.progress.algorithmVersion === '2.0') {
+            return;
+        }
+
+        console.log('Migrating to new algorithm (v2.0)...');
+        let migratedCount = 0;
+        
+        // 新的间隔数组
+        const newIntervals = [1, 3, 7, 14, 30, 60, 120];
+        
+        // 遍历所有单词进度
+        Object.keys(this.progress.wordProgress).forEach(wordId => {
+            const progress = this.progress.wordProgress[wordId];
+            
+            // 如果没有phase字段，基于reviewCount推算phase
+            if (progress.phase === undefined) {
+                // 基于复习次数推算阶段，但不能超过最大阶段
+                progress.phase = Math.min(progress.reviewCount || 0, newIntervals.length - 1);
+            }
+            
+            // 重新计算nextReview时间
+            if (progress.phase !== undefined && !progress.completed) {
+                const interval = newIntervals[progress.phase] || 1;
+                const lastReviewed = progress.lastReviewed ? new Date(progress.lastReviewed) : new Date();
+                const nextReview = new Date(lastReviewed);
+                nextReview.setDate(nextReview.getDate() + interval);
+                
+                progress.nextReview = nextReview.toISOString();
+                migratedCount++;
+            }
+        });
+        
+        // 标记已迁移
+        this.progress.algorithmVersion = '2.0';
+        this.progress.migratedAt = new Date().toISOString();
+        
+        // 保存更新
+        this.saveProgress();
+        
+        console.log(`Migration completed. Updated ${migratedCount} words.`);
     }
 
 }

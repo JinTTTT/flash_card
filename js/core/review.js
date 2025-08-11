@@ -33,6 +33,22 @@ class ReviewSession {
         const currentWord = this.getCurrentWord();
         if (!currentWord) return false;
 
+        // Don't Know：将单词移到队列末尾，不增加completed计数
+        if (difficulty === -1) {
+            // 从当前位置移除单词
+            const wordToMove = this.currentWords.splice(this.currentIndex, 1)[0];
+            // 添加到队列末尾
+            this.currentWords.push(wordToMove);
+            // 不增加currentIndex，这样下一个单词自动成为当前单词
+            
+            // 更新单词进度（阶段归零）
+            this.algorithm.updateReview(currentWord.id, difficulty, this.storage);
+            
+            // 如果队列中没有更多单词了，完成复习
+            return this.currentIndex >= this.currentWords.length;
+        }
+        
+        // Vague 和 Remember 的正常处理
         this.algorithm.updateReview(currentWord.id, difficulty, this.storage);
         
         if (difficulty === 1) this.session.correct++;

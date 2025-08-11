@@ -3,6 +3,29 @@ class UI {
         this.currentSection = 'add';
     }
 
+    // 统一的phase显示样式
+    renderPhaseDisplay(phase) {
+        // 定义彩虹颜色：红橙黄绿蓝靛紫
+        const phaseColors = [
+            '#FF0000', // 阶段0 - 红色
+            '#FF8000', // 阶段1 - 橙色
+            '#FFFF00', // 阶段2 - 黄色
+            '#00FF00', // 阶段3 - 绿色
+            '#00BFFF', // 阶段4 - 蓝色
+            '#4B0082', // 阶段5 - 靛色
+            '#8B00FF'  // 阶段6 - 紫色
+        ];
+        
+        const phaseColor = phaseColors[Math.min(phase, phaseColors.length - 1)];
+        
+        return `
+            <div style="font-size: 0.5em; font-style: italic; color: #666; display: flex; align-items: center; gap: 4px;">
+                <span>Phase ${phase}</span>
+                <div style="width: 0.8em; height: 0.8em; background-color: ${phaseColor}; border-radius: 50%;"></div>
+            </div>
+        `;
+    }
+
     showSection(sectionName) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -24,9 +47,19 @@ class UI {
 
 
 
-    updateReviewUI(session) {
-        document.getElementById('review-progress').textContent = 
-            `Progress: ${session.completed}/${session.total}`;
+    updateReviewUI(session, currentIndex = 0, totalWords = 0) {
+        if (!session || totalWords === 0) {
+            document.getElementById('review-progress').textContent = '0/0';
+            return;
+        }
+        
+        // 计算当前位置
+        const currentPosition = Math.min(currentIndex + 1, totalWords);
+        
+        // 简单显示：当前位置/总数
+        const progressText = `${currentPosition}/${totalWords}`;
+        
+        document.getElementById('review-progress').textContent = progressText;
     }
 
     showFlashCard(word) {
@@ -38,13 +71,38 @@ class UI {
 
         document.getElementById('no-review').style.display = 'none';
         document.getElementById('flashcard').style.display = 'block';
-        document.getElementById('current-word').textContent = word.word;
+        
+        // 获取单词阶段
+        const progress = window.app?.storage?.progress?.wordProgress?.[word.id];
+        const phase = window.app?.algorithm?.getWordPhase(progress) || 0;
+        
+        // 显示阶段和单词
+        const wordElement = document.getElementById('current-word');
+        wordElement.innerHTML = `
+            <div style="text-align: center;">
+                <div style="margin-bottom: 8px; display: flex; justify-content: center;">
+                    ${this.renderPhaseDisplay(phase)}
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <span>${word.word}</span>
+                    <button class="btn secondary" id="pronounce-btn-inline" onclick="window.app.pronunciation.speak('${word.word}')" style="padding: 4px 8px; font-size: 0.8em;">🔊</button>
+                </div>
+            </div>
+        `;
+        
         document.getElementById('current-definition').textContent = word.definition;
         document.getElementById('current-examples').textContent = word.examples;
         
         document.querySelector('.card-front').style.display = 'flex';
         document.querySelector('.card-back').style.display = 'none';
 
+        // 自动发音 - 只读单词文本
+        if (window.app && window.app.pronunciation) {
+            // 延迟200ms发音，确保UI更新完成
+            setTimeout(() => {
+                window.app.pronunciation.speak(word.word);
+            }, 200);
+        }
     }
 
     showAnswer() {
@@ -102,8 +160,11 @@ class UI {
         return `
             <div class="word-list-item">
                 <div class="word-header">
-                    <h3 class="word-title">${word.word}</h3>
-                    <span class="phase-badge phase-${word.phase}">Phase ${word.phase}</span>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h3 class="word-title">${word.word}</h3>
+                        ${this.renderPhaseDisplay(word.phase)}
+                    </div>
+                    <button class="btn danger" onclick="window.app.deleteWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Delete</button>
                 </div>
                 
                 <div class="word-definition">${word.definition}</div>
