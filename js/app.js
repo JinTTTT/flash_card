@@ -160,6 +160,41 @@ class FlashCardApp {
         this.initWordList();
     }
 
+    // 从单词列表中编辑单词
+    editWordFromList(wordId) {
+        const word = this.storage.words.find(w => w.id == wordId);
+        if (!word) {
+            this.ui.showMessage('Word not found', 'error');
+            return;
+        }
+        
+        // 显示编辑模态框
+        this.ui.showEditWordModal(word);
+    }
+
+    // 更新单词信息
+    updateWord(wordId, updatedData) {
+        // 检查是否与其他单词重复（排除自身）
+        const existingWord = this.storage.words.find(w => 
+            w.id != wordId && w.word.toLowerCase() === updatedData.word.toLowerCase()
+        );
+        
+        if (existingWord) {
+            this.ui.showMessage('A word with this name already exists', 'error');
+            return;
+        }
+        
+        // 更新单词
+        const success = this.storage.updateWord(wordId, updatedData);
+        if (success) {
+            this.ui.showMessage('Word updated successfully!', 'success');
+            // 刷新单词列表
+            this.initWordList();
+        } else {
+            this.ui.showMessage('Failed to update word', 'error');
+        }
+    }
+
     // Export all words to JSON file for backup
     async exportJSON() {
         try {

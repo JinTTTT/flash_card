@@ -196,6 +196,27 @@ class Storage {
         return this.deleteWord(wordId);
     }
 
+    // 更新单词信息
+    updateWord(wordId, updatedData) {
+        const wordIndex = this.words.findIndex(w => w.id == wordId);
+        if (wordIndex === -1) {
+            console.error('Word not found:', wordId);
+            return false;
+        }
+        
+        // 更新单词数据，保留原有的id和createdAt
+        this.words[wordIndex] = {
+            ...this.words[wordIndex],
+            ...updatedData,
+            id: wordId, // 确保ID不被覆盖
+            createdAt: this.words[wordIndex].createdAt // 保留创建时间
+        };
+        
+        // 保存到缓存
+        this.saveProgress();
+        return true;
+    }
+
     updateWordProgress(wordId, reviewData) {
         if (!this.progress.wordProgress[wordId]) {
             this.progress.wordProgress[wordId] = {

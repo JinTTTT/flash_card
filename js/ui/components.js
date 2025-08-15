@@ -164,7 +164,10 @@ class UI {
                         <h3 class="word-title">${word.word}</h3>
                         ${this.renderPhaseDisplay(word.phase)}
                     </div>
-                    <button class="btn danger" onclick="window.app.deleteWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Delete</button>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="btn secondary" onclick="window.app.editWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Edit</button>
+                        <button class="btn danger" onclick="window.app.deleteWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Delete</button>
+                    </div>
                 </div>
                 
                 <div class="word-definition">${word.definition}</div>
@@ -198,5 +201,100 @@ class UI {
         if (diffDays < -1) return `${Math.abs(diffDays)} days ago`;
         
         return date.toLocaleDateString();
+    }
+
+    // HTML转义函数
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // 显示编辑单词模态框
+    showEditWordModal(word) {
+        // 转义HTML以防止注入
+        const escapedWord = this.escapeHtml(word.word || '');
+        const escapedDefinition = this.escapeHtml(word.definition || '');
+        const escapedExamples = this.escapeHtml(word.examples || '');
+        
+        // 创建模态框HTML
+        const modalHTML = `
+            <div id="edit-word-modal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                <div class="modal-content" style="background: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="margin-top: 0; margin-bottom: 20px;">Edit Word</h3>
+                    <form id="edit-word-form">
+                        <div class="form-group">
+                            <label for="edit-word">Word/Phrase:</label>
+                            <input type="text" id="edit-word" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-definition">Definition:</label>
+                            <input type="text" id="edit-definition" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-examples">Example:</label>
+                            <textarea id="edit-examples" required></textarea>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                            <button type="button" class="btn secondary" onclick="window.app.ui.closeEditWordModal()">Cancel</button>
+                            <button type="submit" class="btn primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        `;
+        
+        // 添加模态框到页面
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        // 安全地设置值
+        document.getElementById('edit-word').value = word.word || '';
+        document.getElementById('edit-definition').value = word.definition || '';
+        document.getElementById('edit-examples').value = word.examples || '';
+        
+        // 绑定表单提交事件
+        document.getElementById('edit-word-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleEditWordSubmit(word.id);
+        });
+        
+        // 点击模态框外部关闭
+        document.getElementById('edit-word-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'edit-word-modal') {
+                this.closeEditWordModal();
+            }
+        });
+    }
+
+    // 处理编辑表单提交
+    handleEditWordSubmit(wordId) {
+        const wordInput = document.getElementById('edit-word').value.trim();
+        const definitionInput = document.getElementById('edit-definition').value.trim();
+        const examplesInput = document.getElementById('edit-examples').value.trim();
+        
+        if (!wordInput || !definitionInput || !examplesInput) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        // 调用app的更新方法
+        window.app.updateWord(wordId, {
+            word: wordInput,
+            definition: definitionInput,
+            examples: examplesInput
+        });
+        
+        this.closeEditWordModal();
+    }
+
+    // 关闭编辑模态框
+    closeEditWordModal() {
+        const modal = document.getElementById('edit-word-modal');
+        if (modal) {
+            modal.remove();
+        }
     }
 }
