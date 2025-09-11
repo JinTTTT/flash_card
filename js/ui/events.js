@@ -50,6 +50,38 @@ class EventHandler {
         document.getElementById('export-data').addEventListener('click', () => {
             this.app.exportData();
         });
+
+        // Search functionality events
+        document.getElementById('search-btn').addEventListener('click', () => {
+            this.app.searchWord();
+        });
+
+        document.getElementById('search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.app.searchWord();
+            }
+        });
+
+        document.getElementById('add-to-words').addEventListener('click', () => {
+            this.app.addSearchResultToWords();
+        });
+
+        document.getElementById('search-another').addEventListener('click', () => {
+            this.app.searchAnother();
+        });
+
+        // Settings page events
+        document.getElementById('save-api-key').addEventListener('click', () => {
+            this.app.saveApiKey();
+        });
+
+        document.getElementById('show-api-key').addEventListener('click', () => {
+            this.app.toggleApiKeyVisibility();
+        });
+
+        document.getElementById('clear-cache').addEventListener('click', () => {
+            this.app.clearAllCache();
+        });
     }
 
 }

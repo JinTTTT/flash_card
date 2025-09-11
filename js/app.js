@@ -6,6 +6,8 @@ class FlashCardApp {
         this.ui = new UI();
         this.events = new EventHandler(this);
         this.pronunciation = new PronunciationService();
+        this.dictionary = new CombinedDictionaryAPI(); // 使用组合词典API
+        this.currentSearchResult = null; // 存储当前查词结果
         
         this.init();
     }
@@ -40,8 +42,181 @@ class FlashCardApp {
     showSection(section) {
         this.ui.showSection(section);
         
+        if (section === 'search') this.initSearch();
         if (section === 'review') this.initReview();
         if (section === 'wordlist') this.initWordList();
+        if (section === 'settings') this.initSettings();
+    }
+
+    initSearch() {
+        // 清除之前的搜索结果
+        this.hideSearchResults();
+        this.clearSearchMessage();
+        
+        // 聚焦搜索框
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.focus();
+        }
+    }
+
+    async searchWord() {
+        const searchInput = document.getElementById('search-input');
+        const word = searchInput.value.trim();
+        
+        if (!word) {
+            this.showSearchMessage('Please enter a word to search', 'error');
+            return;
+        }
+
+        try {
+            this.showSearchMessage('Searching...', 'info');
+            this.hideSearchResults();
+            
+            const result = await this.dictionary.searchWord(word);
+            this.currentSearchResult = result;
+            
+            this.displaySearchResult(result);
+            this.clearSearchMessage();
+            
+        } catch (error) {
+            this.showSearchMessage(error.message, 'error');
+            this.hideSearchResults();
+        }
+    }
+
+    displaySearchResult(result) {
+        // 显示结果容器
+        const resultsDiv = document.getElementById('search-results');
+        resultsDiv.style.display = 'block';
+        
+        // 填充数据
+        document.getElementById('result-word').textContent = result.word;
+        
+        // 显示英文定义和中文翻译
+        const definitionText = result.definition;
+        const chineseTranslation = result.chineseTranslation || '翻译加载中...';
+        
+        // 如果有详细的定义翻译，优先使用；否则使用单词翻译
+        const finalChineseText = result.chineseDefinition || chineseTranslation;
+        const combinedDefinition = `${definitionText}\n中文: ${finalChineseText}`;
+        document.getElementById('result-definition').textContent = combinedDefinition;
+        
+        document.getElementById('result-pos').textContent = result.partOfSpeech;
+        
+        // 音标
+        const phoneticSpan = document.getElementById('result-phonetic');
+        if (result.phonetic) {
+            phoneticSpan.textContent = result.phonetic;
+            phoneticSpan.style.display = 'inline';
+        } else {
+            phoneticSpan.style.display = 'none';
+        }
+        
+        // 例句（包含中文翻译）
+        const exampleSection = document.getElementById('example-section');
+        const exampleP = document.getElementById('result-example');
+        if (result.example) {
+            // 始终显示英文例句和中文翻译
+            const chineseExampleText = result.chineseExample || '例句翻译加载中...';
+            const exampleText = `${result.example}\n中文: ${chineseExampleText}`;
+            exampleP.textContent = exampleText;
+            exampleSection.style.display = 'block';
+        } else {
+            exampleSection.style.display = 'none';
+        }
+        
+        // 音频按钮
+        const audioBtn = document.getElementById('play-audio');
+        if (result.audio) {
+            audioBtn.style.display = 'inline-block';
+            audioBtn.onclick = () => this.playAudio(result.audio);
+        } else {
+            audioBtn.style.display = 'none';
+        }
+        
+        // 检查是否已存在于词汇列表
+        this.updateAddButton();
+    }
+
+    updateAddButton() {
+        const addBtn = document.getElementById('add-to-words');
+        if (!this.currentSearchResult) return;
+        
+        const exists = this.storage.words.find(w => 
+            w.word.toLowerCase() === this.currentSearchResult.word.toLowerCase()
+        );
+        
+        if (exists) {
+            addBtn.textContent = '✅ Already in Your Words';
+            addBtn.disabled = true;
+            addBtn.className = 'btn secondary';
+        } else {
+            addBtn.textContent = '➕ Add to My Words';
+            addBtn.disabled = false;
+            addBtn.className = 'btn success';
+        }
+    }
+
+    addSearchResultToWords() {
+        if (!this.currentSearchResult) return;
+        
+        const exists = this.storage.words.find(w => 
+            w.word.toLowerCase() === this.currentSearchResult.word.toLowerCase()
+        );
+        
+        if (exists) {
+            this.showSearchMessage('This word is already in your word list', 'warning');
+            return;
+        }
+        
+        // 添加到词汇列表
+        const result = this.currentSearchResult;
+        this.storage.addWord(
+            result.word,
+            result.definition,
+            result.example || `Example for "${result.word}"`
+        );
+        
+        this.showSearchMessage(`"${result.word}" added to your word list!`, 'success');
+        this.updateAddButton();
+        this.updateUI();
+    }
+
+    searchAnother() {
+        const searchInput = document.getElementById('search-input');
+        searchInput.value = '';
+        searchInput.focus();
+        this.hideSearchResults();
+        this.clearSearchMessage();
+        this.currentSearchResult = null;
+    }
+
+    playAudio(audioUrl) {
+        if (!audioUrl) return;
+        
+        const audio = new Audio(audioUrl);
+        audio.play().catch(error => {
+            console.warn('Could not play audio:', error);
+            this.showSearchMessage('Audio playback failed', 'warning');
+        });
+    }
+
+    showSearchMessage(message, type = 'info') {
+        const messageDiv = document.getElementById('search-message');
+        messageDiv.textContent = message;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'block';
+    }
+
+    clearSearchMessage() {
+        const messageDiv = document.getElementById('search-message');
+        messageDiv.style.display = 'none';
+    }
+
+    hideSearchResults() {
+        const resultsDiv = document.getElementById('search-results');
+        resultsDiv.style.display = 'none';
     }
 
     addWord() {
@@ -301,6 +476,115 @@ class FlashCardApp {
         } catch (error) {
             console.error('Export data error:', error);
             this.ui.showMessage('Export failed: ' + error.message, 'error');
+        }
+    }
+
+    // Settings 相关方法
+    initSettings() {
+        this.loadApiKeyStatus();
+    }
+
+    loadApiKeyStatus() {
+        const statusDiv = document.getElementById('api-key-status');
+        const apiKeyInput = document.getElementById('api-key-input');
+        
+        // 检查是否已保存API密钥
+        const savedKey = localStorage.getItem('microsoft-translator-api-key');
+        if (savedKey) {
+            statusDiv.className = 'api-key-status success';
+            statusDiv.innerHTML = '✅ API密钥已配置并保存';
+            apiKeyInput.value = '••••••••••••••••'; // 显示掩码
+        } else {
+            statusDiv.className = 'api-key-status info';
+            statusDiv.innerHTML = '⚠️ 未配置API密钥，翻译功能将受限';
+        }
+    }
+
+    saveApiKey() {
+        const apiKeyInput = document.getElementById('api-key-input');
+        const statusDiv = document.getElementById('api-key-status');
+        const apiKey = apiKeyInput.value.trim();
+
+        if (!apiKey) {
+            statusDiv.className = 'api-key-status error';
+            statusDiv.innerHTML = '❌ 请输入有效的API密钥';
+            return;
+        }
+
+        if (apiKey === '••••••••••••••••') {
+            statusDiv.className = 'api-key-status info';
+            statusDiv.innerHTML = '⚠️ API密钥已保存，无需重复保存';
+            return;
+        }
+
+        try {
+            // 保存API密钥并测试
+            this.dictionary.translator.setApiKey(apiKey);
+            
+            statusDiv.className = 'api-key-status success';
+            statusDiv.innerHTML = '✅ API密钥已保存成功！';
+            
+            // 隐藏真实的密钥
+            apiKeyInput.value = '••••••••••••••••';
+            
+            // 可选：测试API密钥
+            this.testApiKey(apiKey);
+            
+        } catch (error) {
+            statusDiv.className = 'api-key-status error';
+            statusDiv.innerHTML = `❌ 保存失败: ${error.message}`;
+        }
+    }
+
+    async testApiKey(apiKey) {
+        const statusDiv = document.getElementById('api-key-status');
+        
+        try {
+            // 测试翻译一个简单的词
+            const result = await this.dictionary.translator.translateWord('test');
+            
+            statusDiv.className = 'api-key-status success';
+            statusDiv.innerHTML = '✅ API密钥验证成功，翻译功能已启用！';
+            
+        } catch (error) {
+            statusDiv.className = 'api-key-status error';
+            statusDiv.innerHTML = `❌ API密钥测试失败: ${error.message}`;
+        }
+    }
+
+    toggleApiKeyVisibility() {
+        const apiKeyInput = document.getElementById('api-key-input');
+        const showBtn = document.getElementById('show-api-key');
+        
+        if (apiKeyInput.type === 'password') {
+            const savedKey = localStorage.getItem('microsoft-translator-api-key');
+            if (savedKey) {
+                apiKeyInput.type = 'text';
+                apiKeyInput.value = savedKey;
+                showBtn.textContent = '🙈';
+            }
+        } else {
+            apiKeyInput.type = 'password';
+            apiKeyInput.value = '••••••••••••••••';
+            showBtn.textContent = '👁️';
+        }
+    }
+
+    clearAllCache() {
+        if (confirm('确定要清除所有缓存吗？这将清除翻译缓存和搜索结果缓存。')) {
+            try {
+                // 清除翻译缓存
+                this.dictionary.clearCache();
+                
+                // 清除其他相关缓存
+                localStorage.removeItem('flashcard-daily-reviewed');
+                localStorage.removeItem('flashcard-last-reset');
+                
+                alert('✅ 缓存已清除完成！');
+                
+            } catch (error) {
+                alert('❌ 清除缓存失败: ' + error.message);
+            }
         }
     }
 

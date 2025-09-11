@@ -4,6 +4,8 @@ A minimalist vocabulary learning app using the Ebbinghaus forgetting curve algor
 
 ## ✨ Features
 
+- **Smart Dictionary Search**: AI-powered English-Chinese translation
+- **Rich Word Information**: Definitions, examples, phonetics, audio
 - **Smart 3-Stage Review**: Remember → Recall → Complete Answer
 - **7-Phase Spaced Repetition**: 1→3→7→14→30→60→120 days
 - **Unified Data Management**: Single file for vocabulary + progress
@@ -32,10 +34,11 @@ python3 -m http.server 8080
 
 ## 🎯 Learning Flow
 
-1. **Add Words**: Word → Definition → Example
-2. **Review**: 3-stage intelligent assessment
-3. **Progress**: 7 colorful phases (Red→Purple)
-4. **Mastery**: Words graduate after phase 6
+1. **Search Words**: Enter English word → Get definition + Chinese translation
+2. **Add to List**: One-click to add searched words to your vocabulary
+3. **Review**: 3-stage intelligent assessment (Remember → Recall → Answer)
+4. **Progress**: 7 colorful phases (Red→Purple)
+5. **Mastery**: Words graduate after phase 6
 
 ## 🎨 Design
 
@@ -49,6 +52,12 @@ The algorithm uses a scientific 7-phase system with color-coded indicators:
 - **Phase 5** 🟣: 60 days (Indigo)
 - **Phase 6** 🟣: 120 days (Purple)
 - **Mastery**: Words are removed after completing Phase 6
+
+## 🔍 Dictionary APIs
+
+- **Free Dictionary API**: English definitions, examples, phonetics
+- **Microsoft Translator**: AI-powered Chinese translations
+- **Smart Fallback**: Graceful degradation if services unavailable
 
 ## 📱 Access Anywhere
 

@@ -13,15 +13,73 @@
     <header>
         <h1>Flash Card Learning</h1>
         <nav>
-            <button class="nav-btn active" data-section="add">Add Word</button>
-            <button class="nav-btn" data-section="review">Review</button>
-            <button class="nav-btn" data-section="wordlist">Word List</button>
+            <button class="nav-btn active" data-section="search">🔍 Search</button>
+            <button class="nav-btn" data-section="add">➕ Add Word</button>
+            <button class="nav-btn" data-section="review">📚 Review</button>
+            <button class="nav-btn" data-section="wordlist">📝 Word List</button>
+            <button class="nav-btn" data-section="settings">⚙️ Settings</button>
         </nav>
     </header>
 
     <main>
+        <!-- 查词区域 -->
+        <section id="search" class="section active">
+            <div class="container">
+                <h2>🔍 Search Dictionary</h2>
+                
+                <div class="search-form">
+                    <div class="search-input-group">
+                        <input type="text" id="search-input" placeholder="Enter a word to search..." autocomplete="off">
+                        <button type="button" id="search-btn" class="btn primary">Search</button>
+                    </div>
+                </div>
+
+                <div id="search-results" class="search-results" style="display: none;">
+                    <div class="word-card">
+                        <div class="word-header">
+                            <h3 id="result-word" class="word-title"></h3>
+                            <span id="result-phonetic" class="phonetic"></span>
+                            <button id="play-audio" class="audio-btn" style="display: none;">🔊</button>
+                        </div>
+                        
+                        <div class="word-content">
+                            <div class="part-of-speech">
+                                <span id="result-pos" class="pos-tag"></span>
+                            </div>
+                            
+                            <div class="definition">
+                                <strong>Definition:</strong>
+                                <p id="result-definition"></p>
+                            </div>
+                            
+                            <div id="example-section" class="example" style="display: none;">
+                                <strong>Example:</strong>
+                                <p id="result-example"></p>
+                            </div>
+                            
+                            <div class="word-actions">
+                                <button id="add-to-words" class="btn success">➕ Add to My Words</button>
+                                <button id="search-another" class="btn secondary">🔍 Search Another</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-message" class="message"></div>
+                
+                <div class="search-hints">
+                    <h4>💡 Quick Tips:</h4>
+                    <ul>
+                        <li>Search any English word to get definition and examples</li>
+                        <li>Click "Add to My Words" to start learning</li>
+                        <li>All added words appear in your Review and Word List</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <!-- 添加单词区域 -->
-        <section id="add" class="section active">
+        <section id="add" class="section">
             <div class="container">
                 <h2>Add New Word</h2>
                 <form id="word-form">
@@ -132,6 +190,66 @@
             </div>
         </section>
 
+        <!-- 设置区域 -->
+        <section id="settings" class="section">
+            <div class="container">
+                <h2>⚙️ Settings</h2>
+                
+                <div class="settings-section">
+                    <h3>🔑 API Configuration</h3>
+                    <p class="settings-description">
+                        Configure your Microsoft Translator API key for high-quality Chinese translations. 
+                        The key is stored locally in your browser and never sent to our servers.
+                    </p>
+                    
+                    <div class="form-group">
+                        <label for="api-key-input">Microsoft Translator API Key:</label>
+                        <div class="api-key-group">
+                            <input type="password" id="api-key-input" placeholder="Enter your API key..." class="api-key-input">
+                            <button type="button" id="show-api-key" class="btn secondary small">👁️</button>
+                            <button type="button" id="save-api-key" class="btn primary">Save</button>
+                        </div>
+                        <div class="api-key-status" id="api-key-status">
+                            <!-- 状态信息 -->
+                        </div>
+                    </div>
+
+                    <div class="settings-help">
+                        <h4>📋 How to get your API key:</h4>
+                        <ol>
+                            <li>Visit <a href="https://azure.microsoft.com/en-us/services/cognitive-services/translator/" target="_blank">Azure Translator</a></li>
+                            <li>Create a free account (200万字符/月免费额度)</li>
+                            <li>Create a Translator resource</li>
+                            <li>Copy the API key from the resource dashboard</li>
+                            <li>Paste it above and click Save</li>
+                        </ol>
+                        
+                        <div class="settings-note">
+                            <strong>🔒 Privacy:</strong> Your API key is stored locally in your browser. 
+                            We never collect or store your keys on our servers.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🗂️ Data Management</h3>
+                    <div class="data-controls">
+                        <button id="data-import" class="btn secondary">📥 Import Data</button>
+                        <button id="export-data" class="btn secondary">📤 Export Data</button>
+                        <input type="file" id="file-input" accept=".json" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🧹 Cache Management</h3>
+                    <p class="settings-description">
+                        Clear cached translations and search results to free up browser storage.
+                    </p>
+                    <button id="clear-cache" class="btn warning">🗑️ Clear All Cache</button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
@@ -142,6 +260,8 @@
     <script src="js/core/algorithm.js"></script>
     <script src="js/core/review.js"></script>
     <script src="js/core/pronunciation.js"></script>
+    <script src="js/core/dictionary.js"></script>
+    <script src="js/core/translator.js"></script>
     <script src="js/ui/components.js"></script>
     <script src="js/ui/events.js"></script>
     <script src="js/app.js"></script>

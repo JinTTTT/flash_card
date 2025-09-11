@@ -40,3 +40,8 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# API密钥文件 - 不要提交到git
+api-keys.txt
+*.key
+config.local.js
