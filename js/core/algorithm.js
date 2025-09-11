@@ -16,22 +16,26 @@ class EbbinghausAlgorithm {
         return nextReview.toISOString();
     }
 
-    getWordsForReview(words, progressData) {
+    getWordsForReview(words) {
         const now = new Date();
         
         return words.filter(word => {
-            const progress = progressData[word.id];
+            // 新数据结构：进度信息直接在word对象中
+            if (!word.nextReview) return true; // 新单词
             
-            if (!progress) return true;
-            
-            const nextReview = new Date(progress.nextReview);
-            return nextReview <= now && !progress.completed;
+            const nextReview = new Date(word.nextReview);
+            return nextReview <= now && !word.completed;
         });
     }
 
     updateReview(wordId, difficulty, storage) {
-        const progress = storage.progress.wordProgress[wordId];
-        const currentPhase = progress?.phase || 0;
+        const word = storage.words.find(w => w.id == wordId);
+        if (!word) {
+            console.error('Word not found for review update:', wordId);
+            return null;
+        }
+        
+        const currentPhase = word.phase || 0;
         
         let newPhase;
         let shouldDelete = false;
@@ -60,7 +64,7 @@ class EbbinghausAlgorithm {
             phase: newPhase,
             difficulty: difficulty,
             nextReview: nextReview,
-            reviewCount: (progress?.reviewCount || 0) + 1,
+            reviewCount: (word.reviewCount || 0) + 1,
             completed: shouldDelete
         };
         
@@ -75,8 +79,8 @@ class EbbinghausAlgorithm {
     }
 
     // 获取单词的当前阶段 (0-6)
-    getWordPhase(wordProgress) {
-        if (!wordProgress) return 0;
-        return wordProgress.phase || 0;
+    getWordPhase(word) {
+        if (!word) return 0;
+        return word.phase || 0;
     }
 }

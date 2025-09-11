@@ -398,5 +398,277 @@
     "examples": "chronic disease",
     "category": "",
     "createdAt": "2025-08-18T19:16:08.431Z"
+  },
+  {
+    "id": 1755629770471.4336,
+    "word": "analogy",
+    "definition": "comparison between things that have similar features",
+    "examples": "Deep reading means we make analogies",
+    "category": "",
+    "createdAt": "2025-08-19T18:56:10.471Z"
+  },
+  {
+    "id": 1755629845169.4854,
+    "word": "inference",
+    "definition": "推测 guess, conclusion that you make based on the information you already have",
+    "examples": "Seeing smoke in the distance, you would make inference that there's fire",
+    "category": "",
+    "createdAt": "2025-08-19T18:57:25.169Z"
+  },
+  {
+    "id": 1755629904400.0608,
+    "word": "subtle",
+    "definition": "微妙，not obvious",
+    "examples": "there's a subtle difference in meaning between the two words",
+    "category": "",
+    "createdAt": "2025-08-19T18:58:24.400Z"
+  },
+  {
+    "id": 1755629952082.122,
+    "word": "Skimming",
+    "definition": "read rapidly, just get general overview of the text",
+    "examples": "I was just doing a skimming of the paper",
+    "category": "",
+    "createdAt": "2025-08-19T18:59:12.082Z"
+  },
+  {
+    "id": 1755629983733.523,
+    "word": "do something for the joy of it",
+    "definition": "simply for the pleasure",
+    "examples": "I'm reading just for the joy of it",
+    "category": "",
+    "createdAt": "2025-08-19T18:59:43.733Z"
+  },
+  {
+    "id": 1755630050480.5098,
+    "word": "at the surface level",
+    "definition": "looking something superficially rather than trying to understand the deeper meaning",
+    "examples": "When we read at the surface level, we just get the basic information",
+    "category": "",
+    "createdAt": "2025-08-19T19:00:50.480Z"
+  },
+  {
+    "id": 1755630077762.2773,
+    "word": "sore eyes",
+    "definition": "酸的",
+    "examples": "My eyes are sore after long time reading",
+    "category": "",
+    "createdAt": "2025-08-19T19:01:17.762Z"
+  },
+  {
+    "id": 1755630101744.2449,
+    "word": "advocate",
+    "definition": "倡导",
+    "examples": "She advocates equal rights for the women.",
+    "category": "",
+    "createdAt": "2025-08-19T19:01:41.744Z"
+  },
+  {
+    "id": 1756845828490.0444,
+    "word": "sweet, sour, bitter, salty",
+    "definition": "甜，酸，苦，咸",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-02T20:43:48.490Z"
+  },
+  {
+    "id": 1756845855120.822,
+    "word": "preserve",
+    "definition": "/",
+    "examples": "salt can be used to preserve food",
+    "category": "",
+    "createdAt": "2025-09-02T20:44:15.121Z"
+  },
+  {
+    "id": 1756845893662.624,
+    "word": "nomads",
+    "definition": "people travel fromn place to place with their animals",
+    "examples": "People of Kazakhstan used to be nomads",
+    "category": "",
+    "createdAt": "2025-09-02T20:44:53.662Z"
+  },
+  {
+    "id": 1756845917281.0173,
+    "word": "dairy product",
+    "definition": "food made by milk",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-02T20:45:17.281Z"
+  },
+  {
+    "id": 1756845942034.3054,
+    "word": "high blood pressure",
+    "definition": "高血压",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-02T20:45:42.034Z"
+  },
+  {
+    "id": 1756845990503.136,
+    "word": "take a step back",
+    "definition": "temporarily withdraw and re-think calmly",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-02T20:46:30.503Z"
+  },
+  {
+    "id": 1756846033772.9824,
+    "word": "take a step back, and look at the bigger picture",
+    "definition": "/",
+    "examples": "退后一步，重新想一下整体",
+    "category": "",
+    "createdAt": "2025-09-02T20:47:13.772Z"
+  },
+  {
+    "id": 1756846079252.9739,
+    "word": "overconsumption",
+    "definition": "too much",
+    "examples": "Overconscumption of suger can lead to healthy problem",
+    "category": "",
+    "createdAt": "2025-09-02T20:47:59.252Z"
+  },
+  {
+    "id": 1756846142936.3062,
+    "word": "premature",
+    "definition": "things happen too soon than the proper time",
+    "examples": "eat too much salt will lead to premature healthy problem",
+    "category": "",
+    "createdAt": "2025-09-02T20:49:02.936Z"
+  },
+  {
+    "id": 1757360233968.3489,
+    "word": "park ranger",
+    "definition": "/",
+    "examples": "公园巡逻员",
+    "category": "",
+    "createdAt": "2025-09-08T19:37:13.968Z"
+  },
+  {
+    "id": 1757360253733.1208,
+    "word": "tsunamis",
+    "definition": "海啸",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:37:33.733Z"
+  },
+  {
+    "id": 1757360267350.7693,
+    "word": "cyclone",
+    "definition": "龙卷风",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:37:47.350Z"
+  },
+  {
+    "id": 1757360364163.2153,
+    "word": "fatalistic",
+    "definition": "宿命的；命中注定的",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:39:24.163Z"
+  },
+  {
+    "id": 1757360382093.6653,
+    "word": "within your grasp",
+    "definition": "尽在掌握中",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:39:42.093Z"
+  },
+  {
+    "id": 1757360396643.253,
+    "word": "megaphone",
+    "definition": "喇叭；扩音器",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:39:56.643Z"
+  },
+  {
+    "id": 1757360411042.5781,
+    "word": "evacuation",
+    "definition": "撤离",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:40:11.042Z"
+  },
+  {
+    "id": 1757360434140.282,
+    "word": "return to the livelihoods",
+    "definition": "回到日常生计",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:40:34.140Z"
+  },
+  {
+    "id": 1757360466439.7249,
+    "word": "a handred-fold decrease",
+    "definition": "百倍的减少",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-08T19:41:06.439Z"
+  },
+  {
+    "id": 1757417956100.0068,
+    "word": "spill",
+    "definition": "泄漏；洒出",
+    "examples": "Oil is spilled into the ocean",
+    "category": "",
+    "createdAt": "2025-09-09T11:39:16.100Z"
+  },
+  {
+    "id": 1757417975950.6733,
+    "word": "fungi",
+    "definition": "真菌",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:39:35.950Z"
+  },
+  {
+    "id": 1757418021301.0894,
+    "word": "phytoremediation",
+    "definition": "植物修复",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:40:21.301Z"
+  },
+  {
+    "id": 1757418040484.2026,
+    "word": "prestigous award",
+    "definition": "有声望的奖项",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:40:40.484Z"
+  },
+  {
+    "id": 1757418065115.7886,
+    "word": "broken promise",
+    "definition": "失信",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:41:05.115Z"
+  },
+  {
+    "id": 1757418109047.5251,
+    "word": "charisma",
+    "definition": "natural ability to attract, influence and inspire people; 感召力",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:41:49.047Z"
+  },
+  {
+    "id": 1757418126432.7292,
+    "word": "mistrust",
+    "definition": "不信任；猜疑",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-09-09T11:42:06.432Z"
+  },
+  {
+    "id": 1757596191388.5325,
+    "word": "puberty",
+    "definition": "青春期",
+    "examples": "people in puberty have acne",
+    "category": "",
+    "createdAt": "2025-09-11T13:09:51.388Z"
   }
 ]

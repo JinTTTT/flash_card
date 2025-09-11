@@ -8,10 +8,7 @@ class ReviewSession {
     }
 
     startReview() {
-        this.currentWords = this.algorithm.getWordsForReview(
-            this.storage.words, 
-            this.storage.progress.wordProgress
-        );
+        this.currentWords = this.algorithm.getWordsForReview(this.storage.words);
         this.currentWords = this.currentWords.sort(() => Math.random() - 0.5);
         
         this.session = {

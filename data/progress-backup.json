@@ -547,10 +547,10 @@
         "completed": false
       },
       "1755630101744.2449": {
-        "reviewCount": 5,
+        "reviewCount": 1,
         "phase": 1,
-        "lastReviewed": "2025-09-08T19:45:38.059Z",
-        "nextReview": "2025-09-11T19:45:38.059Z",
+        "lastReviewed": "2025-09-11T13:16:56.216Z",
+        "nextReview": "2025-09-14T13:16:56.216Z",
         "difficulty": 1,
         "mastered": false,
         "completed": false
@@ -655,10 +655,10 @@
         "completed": false
       },
       "1757360267350.7693": {
-        "reviewCount": 1,
+        "reviewCount": 2,
         "phase": 1,
-        "lastReviewed": "2025-09-08T19:43:07.633Z",
-        "nextReview": "2025-09-11T19:43:07.633Z",
+        "lastReviewed": "2025-09-11T13:17:26.783Z",
+        "nextReview": "2025-09-14T13:17:26.783Z",
         "difficulty": 1,
         "mastered": false,
         "completed": false
@@ -779,10 +779,19 @@
         "difficulty": 1,
         "mastered": false,
         "completed": false
+      },
+      "1757596191388.5325": {
+        "reviewCount": 2,
+        "phase": 1,
+        "lastReviewed": "2025-09-11T13:10:13.112Z",
+        "nextReview": "2025-09-14T13:10:13.112Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
       }
     },
     "statistics": {
-      "totalReviewed": 294,
+      "totalReviewed": 301,
       "streakDays": 0,
       "lastActivity": null
     },
@@ -793,6 +802,6 @@
     "algorithmVersion": "2.0",
     "migratedAt": "2025-08-11T19:25:00.588Z"
   },
-  "exportedAt": "2025-09-10T18:39:56.507Z",
+  "exportedAt": "2025-09-11T13:31:12.903Z",
   "version": "2.0"
 }

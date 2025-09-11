@@ -67,12 +67,12 @@ class FlashCardApp {
         this.updateUI();
     }
 
-    async importJSON(file) {
+    async importData(file) {
         try {
             const text = await file.text();
-            const importedWords = JSON.parse(text);
-            const count = this.storage.mergeWords(importedWords);
-            this.ui.showMessage(`Successfully imported ${count} words!`);
+            const importedData = JSON.parse(text);
+            const count = this.storage.mergeWords(importedData);
+            this.ui.showMessage(`Successfully imported ${count} words with all progress data!`);
             this.updateUI();
             
             // Refresh current section if needed
@@ -258,17 +258,18 @@ class FlashCardApp {
         this.initWordList();
     }
 
-    // Export all words to JSON file for backup
-    async exportJSON() {
+    // Export all data (vocabulary + progress) to JSON file for backup
+    async exportData() {
         try {
-            const jsonData = JSON.stringify(this.storage.words, null, 2);
+            const exportData = this.storage.exportData();
+            const jsonData = JSON.stringify(exportData, null, 2);
             
             // 尝试使用File System Access API保存到data文件夹
             if ('showSaveFilePicker' in window) {
                 try {
                     const fileHandle = await window.showSaveFilePicker({
                         startIn: 'documents',
-                        suggestedName: `vocabulary-backup-${new Date().toISOString().slice(0, 10)}.json`,
+                        suggestedName: `flashcard-backup-${new Date().toISOString().slice(0, 10)}.json`,
                         types: [{
                             description: 'JSON files',
                             accept: { 'application/json': ['.json'] }
@@ -279,7 +280,7 @@ class FlashCardApp {
                     await writable.write(jsonData);
                     await writable.close();
                     
-                    this.ui.showMessage('Vocabulary exported successfully!', 'success');
+                    this.ui.showMessage('Data exported successfully!', 'success');
                     return;
                 } catch (err) {
                     if (err.name !== 'AbortError') {
@@ -292,92 +293,17 @@ class FlashCardApp {
             const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `vocabulary-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            link.download = `flashcard-backup-${new Date().toISOString().slice(0, 10)}.json`;
             link.click();
             URL.revokeObjectURL(link.href);
             
-            this.ui.showMessage('Vocabulary exported successfully! Please save to your data folder manually.', 'success');
+            this.ui.showMessage('Data exported successfully! Please save to your data folder manually.', 'success');
         } catch (error) {
-            console.error('Export JSON error:', error);
+            console.error('Export data error:', error);
             this.ui.showMessage('Export failed: ' + error.message, 'error');
         }
     }
 
-    // Export progress data to JSON file for backup
-    async exportProgress() {
-        try {
-            const progressData = {
-                progress: this.storage.progress,
-                exportedAt: new Date().toISOString(),
-                version: '2.0'
-            };
-            const jsonData = JSON.stringify(progressData, null, 2);
-            
-            // 尝试使用File System Access API保存到data文件夹
-            if ('showSaveFilePicker' in window) {
-                try {
-                    const fileHandle = await window.showSaveFilePicker({
-                        startIn: 'documents',
-                        suggestedName: `progress-backup-${new Date().toISOString().slice(0, 10)}.json`,
-                        types: [{
-                            description: 'JSON files',
-                            accept: { 'application/json': ['.json'] }
-                        }]
-                    });
-                    
-                    const writable = await fileHandle.createWritable();
-                    await writable.write(jsonData);
-                    await writable.close();
-                    
-                    this.ui.showMessage('Progress exported successfully!', 'success');
-                    return;
-                } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        console.warn('File System Access API failed:', err);
-                    }
-                }
-            }
-            
-            // 降级到传统下载方式
-            const blob = new Blob([jsonData], { type: 'application/json;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `progress-backup-${new Date().toISOString().slice(0, 10)}.json`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-            
-            this.ui.showMessage('Progress exported successfully! Please save to your data folder manually.', 'success');
-        } catch (error) {
-            console.error('Export progress error:', error);
-            this.ui.showMessage('Export progress failed: ' + error.message, 'error');
-        }
-    }
-
-    // Import progress data from JSON file
-    async importProgress(file) {
-        try {
-            const text = await file.text();
-            const importedData = JSON.parse(text);
-            
-            if (importedData.progress) {
-                this.storage.progress = importedData.progress;
-                this.storage.saveProgress();
-                this.ui.showMessage('Progress imported successfully!', 'success');
-                this.updateUI();
-                
-                // Refresh current section if needed
-                if (this.ui.currentSection === 'review') {
-                    this.initReview();
-                } else if (this.ui.currentSection === 'wordlist') {
-                    this.initWordList();
-                }
-            } else {
-                this.ui.showMessage('Invalid progress file format', 'error');
-            }
-        } catch (error) {
-            this.ui.showMessage('Import progress failed: ' + error.message, 'error');
-        }
-    }
 }
 
 function showSection(section) {

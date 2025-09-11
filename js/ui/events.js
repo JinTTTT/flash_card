@@ -41,24 +41,14 @@ class EventHandler {
         });
 
 
-        document.getElementById('json-import').addEventListener('change', (e) => {
+        document.getElementById('data-import').addEventListener('change', (e) => {
             if (e.target.files[0]) {
-                this.app.importJSON(e.target.files[0]);
+                this.app.importData(e.target.files[0]);
             }
         });
 
-        document.getElementById('export-json').addEventListener('click', () => {
-            this.app.exportJSON();
-        });
-
-        document.getElementById('progress-import').addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                this.app.importProgress(e.target.files[0]);
-            }
-        });
-
-        document.getElementById('export-progress').addEventListener('click', () => {
-            this.app.exportProgress();
+        document.getElementById('export-data').addEventListener('click', () => {
+            this.app.exportData();
         });
     }
 
