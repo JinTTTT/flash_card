@@ -130,16 +130,46 @@ class CombinedDictionaryAPI {
     }
 
     /**
-     * 综合查词功能
-     * @param {string} word - 要查询的单词
-     * @returns {Promise<Object>} 完整的词典信息
+     * 检测输入是否为单个单词
+     * @param {string} input - 输入文本
+     * @returns {boolean} 是否为单个单词
      */
-    async searchWord(word) {
-        const cacheKey = word.toLowerCase();
+    isSingleWord(input) {
+        const trimmed = input.trim();
+        // 检查是否包含空格、标点符号等
+        return !/\s|[.!?,:;"'()]/.test(trimmed) && trimmed.length > 0;
+    }
+
+    /**
+     * 智能搜索功能：单词查询 vs 句子翻译
+     * @param {string} input - 输入的单词或句子
+     * @returns {Promise<Object>} 完整的词典信息或翻译结果
+     */
+    async searchWord(input) {
+        const cacheKey = input.toLowerCase();
         if (this.cache[cacheKey]) {
             return this.cache[cacheKey];
         }
 
+        const isSingleWord = this.isSingleWord(input);
+        
+        if (isSingleWord) {
+            // 单词模式：使用词典+翻译
+            return await this.searchSingleWord(input);
+        } else {
+            // 句子模式：只使用翻译
+            return await this.translateSentence(input);
+        }
+    }
+
+    /**
+     * 单词查询模式
+     * @param {string} word - 单词
+     * @returns {Promise<Object>} 词典+翻译结果
+     */
+    async searchSingleWord(word) {
+        const cacheKey = word.toLowerCase();
+        
         try {
             // 同时调用两个API
             const [dictionaryResult, translationResult] = await Promise.all([
@@ -206,6 +236,49 @@ class CombinedDictionaryAPI {
             } catch (fallbackError) {
                 throw new Error(`查词失败: ${error.message}`);
             }
+        }
+    }
+
+    /**
+     * 句子翻译模式
+     * @param {string} sentence - 句子或词组
+     * @returns {Promise<Object>} 翻译结果
+     */
+    async translateSentence(sentence) {
+        const cacheKey = sentence.toLowerCase();
+        
+        try {
+            // 只使用微软翻译API
+            const translationResult = await this.translator.translateTexts([sentence]);
+            
+            const result = {
+                word: sentence,
+                // 句子模式不提供词典信息
+                phonetic: null,
+                audio: null,
+                partOfSpeech: 'Translation',
+                definition: translationResult[0].translation, // 直接显示翻译结果
+                example: '/', // 显示斜杠
+                // 翻译结果
+                chineseTranslation: translationResult[0].translation,
+                chineseDefinition: null, // 不需要额外的中文定义
+                chineseExample: null, // 不需要额外的中文例句
+                // 元数据
+                timestamp: new Date().toISOString(),
+                sources: {
+                    dictionary: 'Sentence Mode',
+                    translation: 'Microsoft Translator'
+                },
+                mode: 'sentence' // 标识这是句子模式
+            };
+
+            // 缓存结果
+            this.cache[cacheKey] = result;
+            return result;
+
+        } catch (error) {
+            console.error('Sentence translation error:', error);
+            throw new Error(`句子翻译失败: ${error.message}`);
         }
     }
 

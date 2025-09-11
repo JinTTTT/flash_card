@@ -4,8 +4,10 @@ A minimalist vocabulary learning app using the Ebbinghaus forgetting curve algor
 
 ## ✨ Features
 
-- **Smart Dictionary Search**: AI-powered English-Chinese translation
+- **Intelligent Search**: Auto-detects words vs sentences/phrases
+- **Dual Mode Support**: Dictionary lookup + AI translation
 - **Rich Word Information**: Definitions, examples, phonetics, audio
+- **Smart Sentence Translation**: Direct AI-powered phrase/sentence translation
 - **Secure API Management**: User-configured Microsoft Translator keys
 - **Smart 3-Stage Review**: Remember → Recall → Complete Answer
 - **7-Phase Spaced Repetition**: 1→3→7→14→30→60→120 days
@@ -35,8 +37,10 @@ python3 -m http.server 8080
 
 ## 🎯 Learning Flow
 
-1. **Search Words**: Enter English word → Get definition + Chinese translation
-2. **Add to List**: One-click to add searched words to your vocabulary
+1. **Smart Search**: 
+   - **Words**: `beautiful` → Dictionary + translation + phonetics
+   - **Sentences**: `I'm a man` → Direct AI translation
+2. **Add to List**: One-click to add searched items to your vocabulary
 3. **Review**: 3-stage intelligent assessment (Remember → Recall → Answer)
 4. **Progress**: 7 colorful phases (Red→Purple)
 5. **Mastery**: Words graduate after phase 6
@@ -54,10 +58,11 @@ The algorithm uses a scientific 7-phase system with color-coded indicators:
 - **Phase 6** 🟣: 120 days (Purple)
 - **Mastery**: Words are removed after completing Phase 6
 
-## 🔍 Dictionary APIs & Security
+## 🔍 Intelligent Search System
 
-- **Free Dictionary API**: English definitions, examples, phonetics (no setup required)
-- **Microsoft Translator**: AI-powered Chinese translations (user API key required)
+- **Auto-Detection**: Automatically identifies words vs sentences/phrases
+- **Word Mode**: Free Dictionary API for definitions + Microsoft Translator for Chinese
+- **Sentence Mode**: Direct Microsoft Translator for phrases and sentences
 - **Privacy First**: API keys stored locally in browser, never on our servers
 - **Smart Fallback**: Graceful degradation if translation services unavailable
 

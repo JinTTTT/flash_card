@@ -93,14 +93,20 @@ class FlashCardApp {
         // 填充数据
         document.getElementById('result-word').textContent = result.word;
         
-        // 显示英文定义和中文翻译
-        const definitionText = result.definition;
-        const chineseTranslation = result.chineseTranslation || '翻译加载中...';
-        
-        // 如果有详细的定义翻译，优先使用；否则使用单词翻译
-        const finalChineseText = result.chineseDefinition || chineseTranslation;
-        const combinedDefinition = `${definitionText}\n中文: ${finalChineseText}`;
-        document.getElementById('result-definition').textContent = combinedDefinition;
+        // 根据模式显示不同的内容
+        if (result.mode === 'sentence') {
+            // 句子翻译模式：直接显示翻译结果
+            document.getElementById('result-definition').textContent = result.definition;
+        } else {
+            // 单词查询模式
+            const definitionText = result.definition;
+            const chineseTranslation = result.chineseTranslation || '翻译加载中...';
+            
+            // 如果有详细的定义翻译，优先使用；否则使用单词翻译
+            const finalChineseText = result.chineseDefinition || chineseTranslation;
+            const combinedDefinition = `${definitionText}\n中文: ${finalChineseText}`;
+            document.getElementById('result-definition').textContent = combinedDefinition;
+        }
         
         document.getElementById('result-pos').textContent = result.partOfSpeech;
         
@@ -117,11 +123,17 @@ class FlashCardApp {
         const exampleSection = document.getElementById('example-section');
         const exampleP = document.getElementById('result-example');
         if (result.example) {
-            // 始终显示英文例句和中文翻译
-            const chineseExampleText = result.chineseExample || '例句翻译加载中...';
-            const exampleText = `${result.example}\n中文: ${chineseExampleText}`;
-            exampleP.textContent = exampleText;
-            exampleSection.style.display = 'block';
+            if (result.mode === 'sentence') {
+                // 句子模式：只显示斜杠
+                exampleP.textContent = result.example; // 就是 '/'
+                exampleSection.style.display = 'block';
+            } else {
+                // 单词模式：显示英文例句和中文翻译
+                const chineseExampleText = result.chineseExample || '例句翻译加载中...';
+                const exampleText = `${result.example}\n中文: ${chineseExampleText}`;
+                exampleP.textContent = exampleText;
+                exampleSection.style.display = 'block';
+            }
         } else {
             exampleSection.style.display = 'none';
         }
