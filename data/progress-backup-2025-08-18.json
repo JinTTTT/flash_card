@@ -1,0 +1,501 @@
+{
+  "progress": {
+    "wordProgress": {
+      "1": {
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "nextReview": "2025-08-12T19:25:00.588Z",
+        "difficulty": 0,
+        "mastered": false,
+        "phase": 0
+      },
+      "2": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:17:54.029Z",
+        "nextReview": "2025-08-19T19:17:54.029Z",
+        "difficulty": -1,
+        "mastered": false,
+        "completed": false,
+        "phase": 0
+      },
+      "3": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-14T19:47:28.739Z",
+        "nextReview": "2025-08-21T19:47:28.739Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 2,
+        "completed": false
+      },
+      "4": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-14T19:48:15.623Z",
+        "nextReview": "2025-08-21T19:48:15.623Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 2,
+        "completed": false
+      },
+      "5": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:17:17.245Z",
+        "nextReview": "2025-09-01T19:17:17.245Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "6": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:16:58.996Z",
+        "nextReview": "2025-08-21T19:16:58.996Z",
+        "difficulty": 0,
+        "mastered": false,
+        "completed": false,
+        "phase": 1
+      },
+      "7": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:18:07.095Z",
+        "nextReview": "2025-09-01T19:18:07.095Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "8": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:17:30.879Z",
+        "nextReview": "2025-09-01T19:17:30.878Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "9": {
+        "reviewCount": 4,
+        "lastReviewed": "2025-08-14T19:47:45.023Z",
+        "nextReview": "2025-08-21T19:47:45.023Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 2,
+        "completed": false
+      },
+      "10": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:19:14.944Z",
+        "nextReview": "2025-09-01T19:19:14.944Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "11": {
+        "reviewCount": 4,
+        "lastReviewed": "2025-08-15T20:08:55.714Z",
+        "nextReview": "2025-08-18T20:08:55.714Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 1,
+        "completed": false
+      },
+      "12": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:17:21.413Z",
+        "nextReview": "2025-09-01T19:17:21.413Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "13": {
+        "reviewCount": 4,
+        "lastReviewed": "2025-08-15T20:08:12.631Z",
+        "nextReview": "2025-08-18T20:08:12.631Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 1,
+        "completed": false
+      },
+      "14": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:19:01.795Z",
+        "nextReview": "2025-09-01T19:19:01.795Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "15": {
+        "reviewCount": 4,
+        "lastReviewed": "2025-08-18T19:16:27.396Z",
+        "nextReview": "2025-08-25T19:16:27.396Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 2,
+        "completed": false
+      },
+      "16": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-15T20:06:49.231Z",
+        "nextReview": "2025-08-18T20:06:49.231Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 1
+      },
+      "17": {
+        "reviewCount": 4,
+        "lastReviewed": "2025-08-15T20:06:36.665Z",
+        "nextReview": "2025-08-18T20:06:36.665Z",
+        "difficulty": 1,
+        "mastered": false,
+        "phase": 1,
+        "completed": false
+      },
+      "18": {
+        "reviewCount": 2,
+        "lastReviewed": "2025-08-14T19:47:16.705Z",
+        "nextReview": "2025-08-21T19:47:16.705Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 2
+      },
+      "19": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-15T20:06:42.565Z",
+        "nextReview": "2025-08-18T20:06:42.565Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 1
+      },
+      "20": {
+        "reviewCount": 5,
+        "lastReviewed": "2025-08-18T19:18:53.279Z",
+        "nextReview": "2025-08-25T19:18:53.279Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 2
+      },
+      "21": {
+        "reviewCount": 2,
+        "lastReviewed": "2025-08-14T19:47:25.972Z",
+        "nextReview": "2025-08-21T19:47:25.972Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 2
+      },
+      "22": {
+        "reviewCount": 2,
+        "phase": 2,
+        "lastReviewed": "2025-08-15T20:08:21.348Z",
+        "nextReview": "2025-08-22T20:08:21.348Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "23": {
+        "reviewCount": 2,
+        "phase": 2,
+        "lastReviewed": "2025-08-15T20:07:08.748Z",
+        "nextReview": "2025-08-22T20:07:08.748Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "24": {
+        "reviewCount": 3,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:06:59.515Z",
+        "nextReview": "2025-08-18T20:06:59.515Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "25": {
+        "reviewCount": 3,
+        "phase": 2,
+        "lastReviewed": "2025-08-15T20:08:17.731Z",
+        "nextReview": "2025-08-22T20:08:17.731Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "26": {
+        "reviewCount": 3,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:09:43.630Z",
+        "nextReview": "2025-08-18T20:09:43.630Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "27": {
+        "reviewCount": 4,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:09:37.630Z",
+        "nextReview": "2025-08-18T20:09:37.630Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "28": {
+        "reviewCount": 2,
+        "phase": 2,
+        "lastReviewed": "2025-08-15T20:07:37.448Z",
+        "nextReview": "2025-08-22T20:07:37.447Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1754666285419.5327": {
+        "reviewCount": 3,
+        "lastReviewed": "2025-08-18T19:18:15.278Z",
+        "nextReview": "2025-09-01T19:18:15.278Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false,
+        "phase": 3
+      },
+      "1754676423382.6807": {
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "nextReview": "2025-08-12T19:25:00.588Z",
+        "difficulty": 0,
+        "mastered": false,
+        "phase": 0
+      },
+      "1754691464965.2534": {
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "nextReview": "2025-08-12T19:25:00.588Z",
+        "difficulty": 0,
+        "mastered": false,
+        "phase": 0
+      },
+      "1754691505245.1628": {
+        "reviewCount": 0,
+        "lastReviewed": null,
+        "nextReview": "2025-08-12T19:25:00.588Z",
+        "difficulty": 0,
+        "mastered": false,
+        "phase": 0
+      },
+      "1754939571825.7954": {
+        "reviewCount": 4,
+        "phase": 2,
+        "lastReviewed": "2025-08-15T20:08:22.681Z",
+        "nextReview": "2025-08-22T20:08:22.681Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755200349082.9778": {
+        "reviewCount": 2,
+        "phase": 2,
+        "lastReviewed": "2025-08-18T19:17:02.462Z",
+        "nextReview": "2025-08-25T19:17:02.462Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755200376750.999": {
+        "reviewCount": 2,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:09:31.864Z",
+        "nextReview": "2025-08-18T20:09:31.863Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755200399350.8103": {
+        "reviewCount": 2,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:07:01.715Z",
+        "nextReview": "2025-08-18T20:07:01.715Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755200439017.059": {
+        "reviewCount": 2,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:08:48.946Z",
+        "nextReview": "2025-08-18T20:08:48.946Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755200473002.6357": {
+        "reviewCount": 2,
+        "phase": 2,
+        "lastReviewed": "2025-08-18T19:18:43.695Z",
+        "nextReview": "2025-08-25T19:18:43.695Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288219352.8389": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:06:44.782Z",
+        "nextReview": "2025-08-18T20:06:44.782Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288281984.959": {
+        "reviewCount": 2,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:09:47.897Z",
+        "nextReview": "2025-08-18T20:09:47.897Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288306550.0159": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:08:52.680Z",
+        "nextReview": "2025-08-18T20:08:52.680Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288328034.5144": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:07:55.748Z",
+        "nextReview": "2025-08-18T20:07:55.748Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288337034.948": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:07:04.215Z",
+        "nextReview": "2025-08-18T20:07:04.215Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288364666.4443": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:07:51.447Z",
+        "nextReview": "2025-08-18T20:07:51.447Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755288391416.2673": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-15T20:07:29.631Z",
+        "nextReview": "2025-08-18T20:07:29.631Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544231051.5107": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:17:12.745Z",
+        "nextReview": "2025-08-21T19:17:12.745Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544275248.9673": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:16:22.314Z",
+        "nextReview": "2025-08-21T19:16:22.314Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544286998.7344": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:18:56.928Z",
+        "nextReview": "2025-08-21T19:18:56.928Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544321599.9734": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:17:42.879Z",
+        "nextReview": "2025-08-21T19:17:42.879Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544383231.6467": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:19:18.111Z",
+        "nextReview": "2025-08-21T19:19:18.111Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544426832.844": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:17:09.262Z",
+        "nextReview": "2025-08-21T19:17:09.262Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544462781.5833": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:18:36.128Z",
+        "nextReview": "2025-08-21T19:18:36.128Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544531847.1309": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:19:12.394Z",
+        "nextReview": "2025-08-21T19:19:12.394Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      },
+      "1755544568431.665": {
+        "reviewCount": 1,
+        "phase": 1,
+        "lastReviewed": "2025-08-18T19:16:18.780Z",
+        "nextReview": "2025-08-21T19:16:18.780Z",
+        "difficulty": 1,
+        "mastered": false,
+        "completed": false
+      }
+    },
+    "statistics": {
+      "totalReviewed": 125,
+      "streakDays": 0,
+      "lastActivity": null
+    },
+    "settings": {
+      "dailyTarget": 20,
+      "reviewReminder": true
+    },
+    "algorithmVersion": "2.0",
+    "migratedAt": "2025-08-11T19:25:00.588Z"
+  },
+  "exportedAt": "2025-08-18T19:22:51.010Z",
+  "version": "2.0"
+}

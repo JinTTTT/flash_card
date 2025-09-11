@@ -1,6 +1,7 @@
 class UI {
     constructor() {
         this.currentSection = 'add';
+        this.reviewState = 'initial'; // initial, middle, final
     }
 
     // 统一的phase显示样式
@@ -72,11 +73,17 @@ class UI {
         document.getElementById('no-review').style.display = 'none';
         document.getElementById('flashcard').style.display = 'block';
         
+        // 重置状态为初始状态
+        this.reviewState = 'initial';
+        this.showInitialState(word);
+    }
+
+    showInitialState(word) {
         // 获取单词阶段
         const progress = window.app?.storage?.progress?.wordProgress?.[word.id];
         const phase = window.app?.algorithm?.getWordPhase(progress) || 0;
         
-        // 显示阶段和单词
+        // 显示初始状态：只有单词和记得/不记得按钮
         const wordElement = document.getElementById('current-word');
         wordElement.innerHTML = `
             <div style="text-align: center;">
@@ -90,23 +97,69 @@ class UI {
             </div>
         `;
         
-        document.getElementById('current-definition').textContent = word.definition;
-        document.getElementById('current-examples').textContent = word.examples;
-        
+        // 显示初始状态的界面
         document.querySelector('.card-front').style.display = 'flex';
+        document.querySelector('.card-middle').style.display = 'none';
         document.querySelector('.card-back').style.display = 'none';
-
-        // 自动发音 - 只读单词文本
+        
+        // 自动发音
         if (window.app && window.app.pronunciation) {
-            // 延迟200ms发音，确保UI更新完成
             setTimeout(() => {
                 window.app.pronunciation.speak(word.word);
             }, 200);
         }
     }
-
-    showAnswer() {
+    
+    showMiddleState(word) {
+        // 中间状态：显示例句和想起来了/没想起按钮
+        this.reviewState = 'middle';
+        
+        const progress = window.app?.storage?.progress?.wordProgress?.[word.id];
+        const phase = window.app?.algorithm?.getWordPhase(progress) || 0;
+        
+        document.getElementById('current-word-middle').innerHTML = `
+            <div style="text-align: center;">
+                <div style="margin-bottom: 8px; display: flex; justify-content: center;">
+                    ${this.renderPhaseDisplay(phase)}
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <span>${word.word}</span>
+                    <button class="btn secondary" onclick="window.app.pronunciation.speak('${word.word}')" style="padding: 4px 8px; font-size: 0.8em;">🔊</button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('current-examples-middle').textContent = word.examples;
+        
         document.querySelector('.card-front').style.display = 'none';
+        document.querySelector('.card-middle').style.display = 'flex';
+        document.querySelector('.card-back').style.display = 'none';
+    }
+    
+    showFinalState(word) {
+        // 最终状态：显示完整的定义和例句
+        this.reviewState = 'final';
+        
+        const progress = window.app?.storage?.progress?.wordProgress?.[word.id];
+        const phase = window.app?.algorithm?.getWordPhase(progress) || 0;
+        
+        document.getElementById('current-word-back').innerHTML = `
+            <div style="text-align: center;">
+                <div style="margin-bottom: 8px; display: flex; justify-content: center;">
+                    ${this.renderPhaseDisplay(phase)}
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <span>${word.word}</span>
+                    <button class="btn secondary" onclick="window.app.pronunciation.speak('${word.word}')" style="padding: 4px 8px; font-size: 0.8em;">🔊</button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('current-definition').textContent = word.definition;
+        document.getElementById('current-examples').textContent = word.examples;
+        
+        document.querySelector('.card-front').style.display = 'none';
+        document.querySelector('.card-middle').style.display = 'none';
         document.querySelector('.card-back').style.display = 'flex';
     }
 
@@ -120,9 +173,11 @@ class UI {
                 <p>Reviewed ${session.total} words today</p>
                 <p>Accuracy: ${accuracy}%</p>
                 <button class="btn primary" onclick="app.showSection('add')">Add More Words</button>
-                <button class="btn secondary" onclick="app.initReview()">Start Review Again</button>
             </div>
         `;
+        
+        // 重置复习状态
+        this.reviewState = 'initial';
     }
 
     // 显示单词列表
@@ -166,6 +221,7 @@ class UI {
                     </div>
                     <div style="display: flex; gap: 5px;">
                         <button class="btn secondary" onclick="window.app.editWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Edit</button>
+                        <button class="btn warning" onclick="window.app.resetWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Reset</button>
                         <button class="btn danger" onclick="window.app.deleteWordFromList('${word.id}')" style="padding: 4px 8px; font-size: 0.8em;">Delete</button>
                     </div>
                 </div>

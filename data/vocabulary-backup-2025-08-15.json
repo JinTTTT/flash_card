@@ -1,14 +1,14 @@
 [
   {
-    "id": "1",
+    "id": 1754666285419.5327,
     "word": "nail down",
-    "definition": "successfully complete/clarify",
-    "examples": "We need to nail down the details of this project",
-    "category": "phrasal verb",
-    "createdAt": "2024-08-08T00:00:00.000Z"
+    "definition": "successfull complete/ clarify/ figure out",
+    "examples": "We need to nail down the details of this project!",
+    "category": "",
+    "createdAt": "2025-08-08T15:18:05.420Z"
   },
   {
-    "id": "2", 
+    "id": "2",
     "word": "meticulous",
     "definition": "very careful and precise",
     "examples": "She is meticulous about her work",
@@ -17,7 +17,7 @@
   },
   {
     "id": "3",
-    "word": "procrastinate", 
+    "word": "procrastinate",
     "definition": "delay or postpone action",
     "examples": "Stop procrastinating and start studying",
     "category": "verb",
@@ -114,23 +114,23 @@
   {
     "id": "15",
     "word": "flourishing",
-    "definition": "growing successfully; doing very well",
-    "examples": "The small business is flourishing in this area",
+    "definition": "general aspect of happiness, including financial, relationship, religion",
+    "examples": "Which country is the most flourishing country in the world?",
     "category": "adjective",
     "createdAt": "2025-08-11T00:00:00.000Z"
   },
   {
     "id": "16",
     "word": "nugget",
-    "definition": "a small piece of something valuable",
-    "examples": "He shared a nugget of wisdom with me",
+    "definition": "small things of something good or precious",
+    "examples": "a nugget of wisdom",
     "category": "noun",
     "createdAt": "2025-08-11T00:00:00.000Z"
   },
   {
     "id": "17",
     "word": "savour",
-    "definition": "enjoy something slowly",
+    "definition": "enjoy things by experiencing it slowly and mindfully, or enjoy good moment",
     "examples": "Take time to savour the beautiful sunset",
     "category": "verb",
     "createdAt": "2025-08-11T00:00:00.000Z"
@@ -138,8 +138,8 @@
   {
     "id": "18",
     "word": "gratitude",
-    "definition": "the feeling of being thankful",
-    "examples": "She expressed her gratitude for all the help",
+    "definition": "thankful to what you have",
+    "examples": "She expressed her gratitude for all the help she received",
     "category": "noun",
     "createdAt": "2025-08-11T00:00:00.000Z"
   },
@@ -154,24 +154,32 @@
   {
     "id": "20",
     "word": "千里之行始于足下",
-    "definition": "a journey of a thousand miles begins with a single step",
-    "examples": "Remember, 千里之行始于足下 - start small to achieve big goals",
+    "definition": "the journey of thousand miles starts with a single step",
+    "examples": "Remember, 千里之行始于足下 - every great achievement begins with taking the first step",
     "category": "proverb",
     "createdAt": "2025-08-11T00:00:00.000Z"
   },
   {
     "id": "21",
     "word": "buzzword",
-    "definition": "a popular word that is used a lot",
-    "examples": "AI has become a buzzword in tech industry",
+    "definition": "a word fashionable and much used",
+    "examples": "Artificial intelligence has become a buzzword in the tech industry",
     "category": "noun",
     "createdAt": "2025-08-11T00:00:00.000Z"
   },
   {
+    "id": 1754939571825.7954,
+    "word": "test",
+    "definition": "test",
+    "examples": "test",
+    "category": "",
+    "createdAt": "2025-08-11T19:12:51.825Z"
+  },
+  {
     "id": "22",
-    "word": "with regard to",
-    "definition": "concerning; about",
-    "examples": "With regard to the budget, we need adjustments",
+    "word": "but with regard to",
+    "definition": "但是关于",
+    "examples": "The plan looks good, but with regard to the budget, we need to make some adjustments",
     "category": "phrase",
     "createdAt": "2025-08-12T00:00:00.000Z"
   },
@@ -222,5 +230,101 @@
     "examples": "Single-use plastic bags are being banned in many cities to reduce environmental waste",
     "category": "noun",
     "createdAt": "2025-08-12T00:00:00.000Z"
+  },
+  {
+    "id": 1755200349082.9778,
+    "word": "pretty much",
+    "definition": "almost",
+    "examples": "pretty much everyone likes chocolates",
+    "category": "",
+    "createdAt": "2025-08-14T19:39:09.082Z"
+  },
+  {
+    "id": 1755200376750.999,
+    "word": "a ballpark figure",
+    "definition": "acceptable accurate appproximation",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-14T19:39:36.750Z"
+  },
+  {
+    "id": 1755200399350.8103,
+    "word": "sweat",
+    "definition": "/",
+    "examples": "I'm sweating",
+    "category": "",
+    "createdAt": "2025-08-14T19:39:59.350Z"
+  },
+  {
+    "id": 1755200439017.059,
+    "word": "dehydration",
+    "definition": "conditon which not have enough water in the body",
+    "examples": "we are dehydrated",
+    "category": "",
+    "createdAt": "2025-08-14T19:40:39.017Z"
+  },
+  {
+    "id": 1755200473002.6357,
+    "word": "symptom",
+    "definition": "signs or feeling of illness",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-14T19:41:13.002Z"
+  },
+  {
+    "id": 1755288219352.8389,
+    "word": "grown-ups",
+    "definition": "adults",
+    "examples": "grown-ups play with toy nowedays is more common than you think",
+    "category": "",
+    "createdAt": "2025-08-15T20:03:39.352Z"
+  },
+  {
+    "id": 1755288281984.959,
+    "word": "recent estimates suggest that",
+    "definition": "最新的估计表明",
+    "examples": "recent estimates suggest that adults buying toys for themselves account for 30-40% of the entire toy market",
+    "category": "",
+    "createdAt": "2025-08-15T20:04:41.984Z"
+  },
+  {
+    "id": 1755288306550.0159,
+    "word": "advertiser",
+    "definition": "广告商",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-15T20:05:06.550Z"
+  },
+  {
+    "id": 1755288328034.5144,
+    "word": "plush toy or plushie",
+    "definition": "毛绒玩具",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-15T20:05:28.034Z"
+  },
+  {
+    "id": 1755288337034.948,
+    "word": "rediscover",
+    "definition": "/",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-15T20:05:37.034Z"
+  },
+  {
+    "id": 1755288364666.4443,
+    "word": "disposable incomee",
+    "definition": "the money you have left over after paying all your expenses",
+    "examples": "/",
+    "category": "",
+    "createdAt": "2025-08-15T20:06:04.666Z"
+  },
+  {
+    "id": 1755288391416.2673,
+    "word": "retail price",
+    "definition": "零售价",
+    "examples": "what is the retail price of the eggs in germany?",
+    "category": "",
+    "createdAt": "2025-08-15T20:06:31.416Z"
   }
 ]

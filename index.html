@@ -82,16 +82,28 @@
                     <!-- Flash Card -->
                     <div id="flashcard" class="flashcard">
                         <div class="card">
+                            <!-- Initial stage: word + remember/don't remember buttons -->
                             <div class="card-front">
                                 <div class="word-display" id="current-word"></div>
-                                <div class="review-buttons">
-                                    <button class="btn danger" id="hard-btn">Don't Know</button>
-                                    <button class="btn warning" id="medium-btn">Vague</button>
-                                    <button class="btn success" id="easy-btn">Remember</button>
+                                <div class="review-buttons" id="initial-buttons">
+                                    <button class="btn success" id="remember-btn">Remember</button>
+                                    <button class="btn danger" id="dont-remember-btn">Don't Remember</button>
                                 </div>
                             </div>
                             
+                            <!-- Middle stage: examples + recall check buttons -->
+                            <div class="card-middle" style="display: none;">
+                                <div class="word-display" id="current-word-middle"></div>
+                                <div class="examples-display" id="current-examples-middle"></div>
+                                <div class="recall-buttons">
+                                    <button class="btn warning" id="recalled-btn">Now I Remember</button>
+                                    <button class="btn danger" id="still-dont-know-btn">Still Don't Know</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Final stage: full answer + next button -->
                             <div class="card-back">
+                                <div class="word-display" id="current-word-back"></div>
                                 <div class="definition-display" id="current-definition"></div>
                                 <div class="examples-display" id="current-examples"></div>
                                 <div class="next-button-container">

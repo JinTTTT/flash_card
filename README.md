@@ -4,14 +4,18 @@ A minimalist English vocabulary learning application based on the Ebbinghaus for
 
 ## ✨ Features
 
-- **Smart Review**: Ebbinghaus forgetting curve algorithm with 7-phase learning system
-- **Flash Cards**: Card-based learning with instant feedback and rainbow phase indicators
-- **Auto Pronunciation**: Automatic word pronunciation using Web Speech API
-- **Progress Tracking**: Real-time progress display and phase visualization
-- **Intelligent Scheduling**: Don't Know words cycle back immediately, Vague words step back one phase
-- **Data Management**: JSON import/export for vocabulary and separate progress backup
-- **Word Management**: Easy word deletion from word list interface
-- **Offline Ready**: Works completely offline, no server required
+- **Smart Review System**: Enhanced 3-stage review process for precise memory assessment
+  - Stage 1: Remember/Don't Remember initial judgment
+  - Stage 2: Example-based recall verification for forgotten words
+  - Stage 3: Complete answer display with progress tracking
+- **Ebbinghaus Algorithm**: 7-phase learning system with intelligent difficulty adjustment
+- **Advanced Flash Cards**: Multi-stage card interface with auto pronunciation
+- **Progress Management**: Rainbow phase indicators (Red→Orange→Yellow→Green→Blue→Indigo→Purple)
+- **Intelligent Queue**: Forgotten words cycle back immediately with phase adjustment
+- **Complete Word Management**: Add, edit, reset to phase 0, and delete words
+- **Data Persistence**: JSON import/export for vocabulary and progress backup
+- **Browser Storage**: Automatic localStorage caching for seamless experience
+- **Offline Ready**: Pure frontend application, no server required
 
 ## 🚀 Quick Start
 
@@ -38,15 +42,24 @@ open index.html  # Mac
 - Fill in: Word/Phrase, Definition, Example
 - Click **"Save Word"**
 
-### Review Session
-- Click **"Review"** tab
-- Words appear as flash cards with **colorful phase indicators**
-- **Auto pronunciation** plays when word is shown
-- Click 🔊 for manual pronunciation
-- Rate your memory:
-  - **Don't Know**: Word goes back to Phase 0, appears at end of current session
-  - **Vague**: Word drops back one phase (shorter interval)
-  - **Remember**: Word advances to next phase (longer interval)
+### Enhanced 3-Stage Review Process
+
+**Stage 1: Initial Assessment**
+- Click **"Review"** tab to start
+- See word with **colorful phase indicator** and **auto pronunciation**
+- Choose: **Remember** or **Don't Remember**
+- **Remember** → Jump to Stage 3 (full answer), word advances to next phase
+- **Don't Remember** → Continue to Stage 2
+
+**Stage 2: Recall Verification** (for forgotten words)
+- View word with example sentence only (no definition shown)
+- Try to recall the meaning, then choose:
+- **Now I Remember** → Word drops back one phase, appears at end of current session
+- **Still Don't Know** → Word resets to Phase 0, appears at end of current session
+
+**Stage 3: Complete Answer Review**
+- See word, definition, and example together
+- Click **Next** to continue reviewing
 
 ### 7-Phase Learning System
 The algorithm uses a scientific 7-phase system with color-coded indicators:
@@ -59,13 +72,18 @@ The algorithm uses a scientific 7-phase system with color-coded indicators:
 - **Phase 6** 🟣: 120 days (Purple)
 - **Mastery**: Words are removed after completing Phase 6
 
+### Word List Management
+- **View All Words**: Click "Word List" tab to see all vocabulary
+- **Edit Words**: Click "Edit" button to modify word, definition, or examples
+- **Reset to Phase 0**: Click "Reset" button to restart learning from beginning
+- **Delete Words**: Click "Delete" button to permanently remove words
+
 ### Data Management
 - **Import Vocabulary**: Load vocabulary from JSON backup file
-- **Export Vocabulary**: Save all words to JSON file
+- **Export Vocabulary**: Save all words to JSON file for backup
 - **Import Progress**: Load learning progress from backup
 - **Export Progress**: Save learning progress and phases separately
-- **Word List Management**: Delete words directly from the word list
-- **Local Storage**: All data saved in browser automatically
+- **Automatic Caching**: All data saved in browser localStorage automatically
 
 ## 🎨 Design Features
 

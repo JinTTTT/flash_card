@@ -186,7 +186,7 @@ class Storage {
     }
 
     deleteWord(wordId) {
-        this.words = this.words.filter(w => w.id !== wordId);
+        this.words = this.words.filter(w => w.id != wordId);
         delete this.progress.wordProgress[wordId];
         this.saveProgress();
     }

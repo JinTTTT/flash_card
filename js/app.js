@@ -114,15 +114,51 @@ class FlashCardApp {
     showCurrentCard() {
         const word = this.review.getCurrentWord();
         this.ui.showFlashCard(word);
+        // 重置待处理的难度值
+        this.pendingDifficulty = null;
     }
 
-    showAnswerAndContinue(difficulty) {
-        // Show answer first for Don't Know and Vague
-        this.ui.showAnswer();
-        // Store the difficulty for later use
-        this.pendingDifficulty = difficulty;
+    // 新的复习交互方法
+    handleRememberClick() {
+        const word = this.review.getCurrentWord();
+        if (!word) return;
+        
+        // 记得：直接显示完整答案，difficulty = 1
+        this.pendingDifficulty = 1;
+        this.ui.showFinalState(word);
     }
-
+    
+    handleDontRememberClick() {
+        const word = this.review.getCurrentWord();
+        if (!word) return;
+        
+        // 不记得：显示例句和中间选择按钮
+        this.ui.showMiddleState(word);
+    }
+    
+    handleRecalledClick() {
+        const word = this.review.getCurrentWord();
+        if (!word) return;
+        
+        // 想起来了：显示完整答案，difficulty = 0（阶段-1，放队尾）
+        this.pendingDifficulty = 0;
+        this.ui.showFinalState(word);
+    }
+    
+    handleStillDontKnowClick() {
+        const word = this.review.getCurrentWord();
+        if (!word) return;
+        
+        // 没有想起：显示完整答案，difficulty = -1（阶段归零，放队尾）
+        this.pendingDifficulty = -1;
+        this.ui.showFinalState(word);
+    }
+    
+    handleNextClick() {
+        // 使用存储的difficulty继续复习
+        this.reviewAnswer(this.pendingDifficulty);
+    }
+    
     reviewAnswer(difficulty) {
         const isComplete = this.review.submitAnswer(difficulty);
         
@@ -135,7 +171,6 @@ class FlashCardApp {
             this.updateReviewProgress();
             this.showCurrentCard();
         }
-        
     }
 
     updateUI() {
@@ -193,6 +228,34 @@ class FlashCardApp {
         } else {
             this.ui.showMessage('Failed to update word', 'error');
         }
+    }
+
+    // 重置单词到阶段0
+    resetWordFromList(wordId) {
+        const word = this.storage.words.find(w => w.id == wordId);
+        if (!word) {
+            this.ui.showMessage('Word not found', 'error');
+            return;
+        }
+        
+        const confirmReset = confirm(`Are you sure you want to reset "${word.word}" to phase 0?`);
+        if (!confirmReset) return;
+        
+        // 重置单词进度到初始状态
+        const resetData = {
+            lastReviewed: new Date().toISOString(),
+            phase: 0,
+            difficulty: -1,
+            nextReview: new Date().toISOString(), // 立即可复习
+            reviewCount: 0,
+            completed: false
+        };
+        
+        this.storage.updateWordProgress(wordId, resetData);
+        this.ui.showMessage(`Word "${word.word}" reset to phase 0!`, 'success');
+        
+        // 刷新单词列表
+        this.initWordList();
     }
 
     // Export all words to JSON file for backup

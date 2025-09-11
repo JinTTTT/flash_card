@@ -17,22 +17,27 @@ class EventHandler {
         });
 
 
-        // Front card buttons
-        document.getElementById('hard-btn').addEventListener('click', () => {
-            this.app.showAnswerAndContinue(-1);
+        // Initial stage buttons
+        document.getElementById('remember-btn').addEventListener('click', () => {
+            this.app.handleRememberClick();
         });
 
-        document.getElementById('medium-btn').addEventListener('click', () => {
-            this.app.showAnswerAndContinue(0);
+        document.getElementById('dont-remember-btn').addEventListener('click', () => {
+            this.app.handleDontRememberClick();
         });
 
-        document.getElementById('easy-btn').addEventListener('click', () => {
-            this.app.reviewAnswer(1); // Remember - jump to next word directly
+        // Middle stage buttons
+        document.getElementById('recalled-btn').addEventListener('click', () => {
+            this.app.handleRecalledClick();
         });
 
-        // Next button (after viewing answer)
+        document.getElementById('still-dont-know-btn').addEventListener('click', () => {
+            this.app.handleStillDontKnowClick();
+        });
+
+        // Next button (final stage)
         document.getElementById('next-btn').addEventListener('click', () => {
-            this.app.reviewAnswer(this.app.pendingDifficulty);
+            this.app.handleNextClick();
         });
 
 

@@ -138,6 +138,7 @@
     border: 1px solid var(--border-color);
 }
 
+
 .word-item:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-hover);
@@ -203,6 +204,7 @@
 }
 
 .card-front,
+.card-middle,
 .card-back {
     padding: 48px 32px;
     display: flex;
@@ -344,6 +346,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .card-front,
+    .card-middle,
     .card-back {
         padding: 32px 24px;
         min-height: 320px;
