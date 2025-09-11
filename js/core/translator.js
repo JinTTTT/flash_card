@@ -19,6 +19,11 @@ class MicrosoftTranslator {
      * @returns {Promise<Object>} 翻译结果
      */
     async translateWord(word) {
+        // 检查API密钥
+        if (!this.config.key) {
+            throw new Error('Microsoft Translator API key not configured');
+        }
+
         // 检查缓存
         const cacheKey = word.toLowerCase();
         if (this.cache[cacheKey]) {
@@ -66,6 +71,11 @@ class MicrosoftTranslator {
      * @returns {Promise<Object[]>} 翻译结果数组
      */
     async translateTexts(texts) {
+        // 检查API密钥
+        if (!this.config.key) {
+            throw new Error('Microsoft Translator API key not configured');
+        }
+
         try {
             const url = `${this.config.endpoint}/translate?api-version=3.0&from=en&to=zh-Hans`;
             
@@ -95,6 +105,16 @@ class MicrosoftTranslator {
             console.error('Batch translation error:', error);
             throw new Error(`批量翻译失败: ${error.message}`);
         }
+    }
+
+    /**
+     * 设置API密钥
+     * @param {string} apiKey - 微软翻译API密钥
+     */
+    setApiKey(apiKey) {
+        this.config.key = apiKey;
+        // 保存到localStorage供下次使用
+        localStorage.setItem('microsoft-translator-api-key', apiKey);
     }
 }
 
@@ -187,6 +207,14 @@ class CombinedDictionaryAPI {
                 throw new Error(`查词失败: ${error.message}`);
             }
         }
+    }
+
+    /**
+     * 设置微软翻译API密钥
+     * @param {string} apiKey - API密钥
+     */
+    setApiKey(apiKey) {
+        this.translator.setApiKey(apiKey);
     }
 
     /**

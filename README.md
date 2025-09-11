@@ -6,6 +6,7 @@ A minimalist vocabulary learning app using the Ebbinghaus forgetting curve algor
 
 - **Smart Dictionary Search**: AI-powered English-Chinese translation
 - **Rich Word Information**: Definitions, examples, phonetics, audio
+- **Secure API Management**: User-configured Microsoft Translator keys
 - **Smart 3-Stage Review**: Remember → Recall → Complete Answer
 - **7-Phase Spaced Repetition**: 1→3→7→14→30→60→120 days
 - **Unified Data Management**: Single file for vocabulary + progress
@@ -53,11 +54,19 @@ The algorithm uses a scientific 7-phase system with color-coded indicators:
 - **Phase 6** 🟣: 120 days (Purple)
 - **Mastery**: Words are removed after completing Phase 6
 
-## 🔍 Dictionary APIs
+## 🔍 Dictionary APIs & Security
 
-- **Free Dictionary API**: English definitions, examples, phonetics
-- **Microsoft Translator**: AI-powered Chinese translations
-- **Smart Fallback**: Graceful degradation if services unavailable
+- **Free Dictionary API**: English definitions, examples, phonetics (no setup required)
+- **Microsoft Translator**: AI-powered Chinese translations (user API key required)
+- **Privacy First**: API keys stored locally in browser, never on our servers
+- **Smart Fallback**: Graceful degradation if translation services unavailable
+
+### 🔑 API Key Setup
+1. Visit [Azure Translator](https://azure.microsoft.com/services/cognitive-services/translator/)
+2. Create free account (2M chars/month free tier)
+3. Create Translator resource and copy API key
+4. Go to ⚙️ Settings in app and paste your key
+5. Enjoy high-quality AI translations!
 
 ## 📱 Access Anywhere
 

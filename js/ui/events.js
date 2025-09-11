@@ -70,17 +70,15 @@ class EventHandler {
             this.app.searchAnother();
         });
 
-        // Settings page events
-        document.getElementById('save-api-key').addEventListener('click', () => {
-            this.app.saveApiKey();
-        });
-
-        document.getElementById('show-api-key').addEventListener('click', () => {
-            this.app.toggleApiKeyVisibility();
-        });
-
-        document.getElementById('clear-cache').addEventListener('click', () => {
-            this.app.clearAllCache();
+        // Settings page events - 使用事件委托，避免元素不存在的问题
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'save-api-key') {
+                this.app.saveApiKey();
+            } else if (e.target.id === 'show-api-key') {
+                this.app.toggleApiKeyVisibility();
+            } else if (e.target.id === 'clear-cache') {
+                this.app.clearAllCache();
+            }
         });
     }
 

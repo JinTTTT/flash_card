@@ -493,7 +493,7 @@ class FlashCardApp {
         if (savedKey) {
             statusDiv.className = 'api-key-status success';
             statusDiv.innerHTML = '✅ API密钥已配置并保存';
-            apiKeyInput.value = '••••••••••••••••'; // 显示掩码
+            apiKeyInput.value = '••••••••••••••••••••••••••••••••'; // 显示掩码
         } else {
             statusDiv.className = 'api-key-status info';
             statusDiv.innerHTML = '⚠️ 未配置API密钥，翻译功能将受限';
@@ -511,21 +511,26 @@ class FlashCardApp {
             return;
         }
 
-        if (apiKey === '••••••••••••••••') {
+        if (apiKey.startsWith('••••••••')) {
             statusDiv.className = 'api-key-status info';
             statusDiv.innerHTML = '⚠️ API密钥已保存，无需重复保存';
             return;
         }
 
         try {
-            // 保存API密钥并测试
-            this.dictionary.translator.setApiKey(apiKey);
+            // 保存API密钥
+            this.dictionary.setApiKey(apiKey);
+            
+            // 确保保存到localStorage（双重保险）
+            localStorage.setItem('microsoft-translator-api-key', apiKey);
             
             statusDiv.className = 'api-key-status success';
             statusDiv.innerHTML = '✅ API密钥已保存成功！';
             
+            console.log('API密钥已保存:', apiKey.substring(0, 10) + '...');
+            
             // 隐藏真实的密钥
-            apiKeyInput.value = '••••••••••••••••';
+            apiKeyInput.value = '••••••••••••••••••••••••••••••••';
             
             // 可选：测试API密钥
             this.testApiKey(apiKey);
@@ -556,17 +561,29 @@ class FlashCardApp {
         const apiKeyInput = document.getElementById('api-key-input');
         const showBtn = document.getElementById('show-api-key');
         
+        console.log('Toggle visibility clicked', { 
+            inputType: apiKeyInput.type, 
+            inputValue: apiKeyInput.value.substring(0, 10) + '...'
+        });
+        
         if (apiKeyInput.type === 'password') {
             const savedKey = localStorage.getItem('microsoft-translator-api-key');
+            console.log('Saved key exists:', !!savedKey);
+            console.log('LocalStorage keys:', Object.keys(localStorage));
+            
             if (savedKey) {
                 apiKeyInput.type = 'text';
                 apiKeyInput.value = savedKey;
                 showBtn.textContent = '🙈';
+                console.log('Showing real key:', savedKey.substring(0, 10) + '...');
+            } else {
+                alert('没有保存的API密钥\n请先输入API密钥并点击Save按钮保存');
             }
         } else {
             apiKeyInput.type = 'password';
-            apiKeyInput.value = '••••••••••••••••';
+            apiKeyInput.value = '••••••••••••••••••••••••••••••••';
             showBtn.textContent = '👁️';
+            console.log('Hiding key');
         }
     }
 
